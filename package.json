@@ -14,6 +14,7 @@
   "author": "chang",
   "license": "ISC",
   "devDependencies": {
-    "vuepress": "^1.5.4"
+    "vuepress": "^1.5.4",
+    "watchpack": "^1.6.1"
   }
 }
