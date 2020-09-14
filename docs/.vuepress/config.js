@@ -26,7 +26,7 @@ module.exports = {
           title: 'CSS',
           collapsable: false,
           children: [
-            'css/CSS使用规则'
+            'css/css常用命名'
           ]
         },
       ],
