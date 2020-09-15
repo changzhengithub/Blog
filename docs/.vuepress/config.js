@@ -16,7 +16,7 @@ module.exports = {
       { text: 'Vue', link: '/vue/' },
       { text: 'React', link: '/react/' },
       { text: 'Server', link: '/server/' },
-      { text: 'Api', link: '/api/' },
+      { text: 'Others', link: '/others/' },
       { text: '掘金', link: 'https://juejin.im/user/1714893870337518' },
       { text: 'GitHub', link: 'https://github.com/changzhengithub'}
     ],
@@ -29,57 +29,43 @@ module.exports = {
             'css/css常用命名'
           ]
         },
+        {
+          title: 'JavaScript',
+          collapsable: false,
+          children: [
+            'javascript/test'
+          ]
+        },
       ],
       '/vue/': [
-        {
-          title: 'Vue',
-          collapsable: false,
-          children: [
-            'test'
-          ],
-        },
+        'vue使用this.$refs 打印为undefined'
       ],
       '/react/': [
-        {
-          title: 'React',
-          collapsable: false,
-          children: [
-            '/react/test'
-          ],
-        },
+        'test'
       ],
       '/server/': [
-        {
-          title: 'Server',
-          collapsable: false,
-          children: [
-            '',
-            '/server/test',
-            '/server/test2'
-          ],
-        },
+        'test',
+        'test2'
       ],
-      '/api/': [
+      '/others/': [
         {
-          title: 'Classes',
+          title: 'Canvas',
           collapsable: false,
           children: [
-            'classes/',
-            'classes/test',
-            'classes/test2',
+            'canvas/',
+            'canvas/test'
           ]
         },
         {
-          title: 'Detail',
+          title: 'Videos',
           collapsable: false,
           children: [
-            'detail/test',
-            'detail/test2',
+            'videos/test'
           ]
         }
       ]
     },
-    activeHeaderLinks: false,
+    activeHeaderLinks: true,
     lastUpdated: 'Last Updated', // 更新时间
   },
   // plugins: ['permalink-pinyin', ['autobar', {'pinyinNav': true}]],
