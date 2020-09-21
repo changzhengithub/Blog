@@ -33,7 +33,7 @@ module.exports = {
           title: 'JavaScript',
           collapsable: false,
           children: [
-            'javascript/test'
+            'javascript/基础问题'
           ]
         },
       ],
