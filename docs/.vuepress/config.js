@@ -33,7 +33,14 @@ module.exports = {
           title: 'JavaScript',
           collapsable: false,
           children: [
-            'javascript/基础问题'
+            'javascript/基础问题',
+            'javascript/字符串API',
+            'javascript/数组API',
+            'javascript/Object',
+            'javascript/日期Date',
+            'javascript/错误对象Error',
+            'javascript/正则表达式',
+            'javascript/this、apply、call、bind',
           ]
         },
       ],
