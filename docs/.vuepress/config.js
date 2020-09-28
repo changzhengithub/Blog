@@ -41,6 +41,7 @@ module.exports = {
             'javascript/错误对象Error',
             'javascript/正则表达式',
             'javascript/this、apply、call、bind',
+            'javascript/原型的理解'
           ]
         },
       ],
