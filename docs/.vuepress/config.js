@@ -43,6 +43,7 @@ module.exports = {
             'javascript/this、apply、call、bind',
             'javascript/原型的理解',
             'javascript/Set与Map',
+            'javascript/Promise'
           ]
         },
       ],
