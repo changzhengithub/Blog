@@ -42,8 +42,17 @@ module.exports = {
             'javascript/正则表达式',
             'javascript/this、apply、call、bind',
             'javascript/原型的理解',
-            'javascript/Set与Map',
-            'javascript/Promise'
+          ]
+        },
+        {
+          title: 'ES6',
+          collapsable: false,
+          children: [
+            'es6/Set与Map',
+            'es6/Promise',
+            'es6/Generator函数的语法',
+            'es6/async函数',
+            'es6/Class类'
           ]
         },
       ],
