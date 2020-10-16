@@ -35,6 +35,7 @@ module.exports = {
           children: [
             'javascript/基础问题',
             'javascript/字符串API',
+            'javascript/Number和Math',
             'javascript/数组API',
             'javascript/Object',
             'javascript/日期Date',

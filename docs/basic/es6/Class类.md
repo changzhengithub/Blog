@@ -230,24 +230,28 @@ var son = new Son();
 son.money(); // 100
 ```
 
-子类使用super关键字继承父类的属性和方法。必须要使用super才行。把this指向父类
+使用`super`关键字继承父类的属性和方法。
 
-使用super关键字访问和调用父类上的函数。可以调用父类的构造函数，也可以调用普通函数。
+子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，继承父类的属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。
 
-在子类的constructor中通过supre调用父类的constructor方法把参数传递给父类。
+虽然是调用父类的构造方法，但这相当于使用`call`来借用父类的方法和属性，`this`指向的是子类。
 
-子类必须在constructor方法中调用super方法，否则新建实例时会报错。没有会默认添加。
+使用`super`关键字访问和调用父类上的函数。可以调用父类的构造函数，也可以调用普通函数。
 
-在子类中只有在使用super之后，才可以定义自己的this。
+在子类的`constructor`中通过`super`调用父类的`constructor`方法把参数传递给父类。
+
+在子类中只有在使用`super`之后，才可以定义自己的`this`。
 
 ```js
 class Phone {
   constructor(brand, price) {
     this.brand = brand;
     this.price = price;
+    this.type = 1
   }
   call() {
     console.log('我可以打电话')
+    console.log(this.type)
   }
 }
 
@@ -258,6 +262,7 @@ class SmartPhone extends Phone {
     this.price = price;
     this.color = color;
     this.size = size;
+    this.type = 2
   }
   newCall() {
     console.log(this.brand) // 子类的属性
@@ -285,10 +290,12 @@ xiaomi.brand // 小米
 xiaomi.color // black
 
 xiaomi.print() // undefined 
-xiaomi.test() // 我可以打电话
+xiaomi.test() 
+// 我可以打电话
+// 2 
 ```
 
-上面代码，super关键字不能调用父类的属性，因为只是借用父类的方法，this是指向子类的，并不是指向父类。实际是只能调用父类原型或者父类上的方法，构造函数实例上的属性和方法就获取不到（constructor中的）
+上面代码，super关键字指向的是父类的原型对象，所以实例（constructor中的）上的属性和方法和属性super是无法调用的（子类可以调用），只能调用原型上的属性和方法。
 
 如果子类方法和父类方法同名，则会覆盖父类方法。
 
