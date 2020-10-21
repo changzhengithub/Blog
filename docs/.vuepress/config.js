@@ -26,7 +26,8 @@ module.exports = {
           title: 'CSS',
           collapsable: false,
           children: [
-            'css/css常用命名'
+            'css/css常用命名',
+            'css/常见字体样式'
           ]
         },
         {
@@ -82,6 +83,14 @@ module.exports = {
           collapsable: false,
           children: [
             'videos/test'
+          ]
+        },
+        {
+          title: 'Git',
+          collapsable: false,
+          children: [
+            'git/git常见问题',
+            'git/git入门教程',
           ]
         }
       ]
