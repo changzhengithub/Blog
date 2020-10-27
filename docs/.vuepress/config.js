@@ -46,6 +46,7 @@ module.exports = {
             'javascript/原型的理解',
             'javascript/解决跨域问题',
             'javascript/事件循环与宏任务、微任务',
+            'javascript/变量提升和函数提升',
           ]
         },
         {
