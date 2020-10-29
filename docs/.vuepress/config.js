@@ -24,7 +24,7 @@ module.exports = {
       '/basic/': [
         {
           title: 'CSS',
-          collapsable: false,
+          collapsable: true,
           children: [
             'css/css常用命名',
             'css/常见字体样式'
@@ -32,7 +32,7 @@ module.exports = {
         },
         {
           title: 'JavaScript',
-          collapsable: false,
+          collapsable: true,
           children: [
             'javascript/基础问题',
             'javascript/字符串API',
@@ -48,11 +48,12 @@ module.exports = {
             'javascript/事件循环与宏任务、微任务',
             'javascript/变量提升和函数提升',
             'javascript/防抖与节流',
+            'javascript/赋值与浅拷贝、深拷贝',
           ]
         },
         {
           title: 'ES6',
-          collapsable: false,
+          collapsable: true,
           children: [
             'es6/Set与Map',
             'es6/Promise',
