@@ -49,6 +49,7 @@ module.exports = {
             'javascript/变量提升和函数提升',
             'javascript/防抖与节流',
             'javascript/赋值与浅拷贝、深拷贝',
+            'javascript/本地存储',
           ]
         },
         {
