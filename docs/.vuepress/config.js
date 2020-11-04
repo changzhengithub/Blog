@@ -50,6 +50,7 @@ module.exports = {
             'javascript/防抖与节流',
             'javascript/赋值与浅拷贝、深拷贝',
             'javascript/本地存储',
+            'javascript/常见代码实现',
           ]
         },
         {
