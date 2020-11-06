@@ -64,6 +64,13 @@ module.exports = {
             'es6/Class类'
           ]
         },
+        {
+          title: 'Problem',
+          collapsable: true,
+          children: [
+            'problem/a标签在IE中无法下载',
+          ]
+        },
       ],
       '/vue/': [
         'vue使用this.$refs 打印为undefined'

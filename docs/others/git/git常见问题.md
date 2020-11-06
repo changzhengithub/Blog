@@ -23,3 +23,39 @@ git push origin master
 ## vs code git 同步问题
 
 [Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync)
+
+## git 克隆仓库
+```git
+git clone  http://10.1.1.11/service/tmall-service.git
+```
+
+## git 克隆指定分支
+```git
+git clone -b dev http://10.1.1.11/service/tmall-service.git
+```
+
+## git 修改本地和远程分支名
+
+```git
+git branch -a  #查看所有分支分支
+git branch -r  #查看远程分支
+
+git branch -m oldBranch newBranch  #本地分支重命名
+
+git push --delete origin oldBranch  #删除远程分支（远端无此分支则跳过该步骤）
+
+git push origin newBranch   #将重命名后的分支推到远端
+
+git branch --set-upstream-to origin/newBranch  #把修改后的本地分支与远程分支关联
+```
+
+## 本地新建文件推送到远程未有的分支
+
+```git
+git init #初始化
+git remote add origin https://github.com/changzhengithub/learn.git #关联远程仓库
+git add .
+git commit -am "init branch" #本地提交
+git checkout -b newbranch #本地新建分支
+git push origin newbranch:newbranch #把本地分支提交到远程上并新建newbranch分支
+```
