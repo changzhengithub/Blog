@@ -51,6 +51,7 @@ module.exports = {
             'javascript/赋值与浅拷贝、深拷贝',
             'javascript/本地存储',
             'javascript/常见代码实现',
+            'javascript/浏览器端数据库indexedDB',
           ]
         },
         {
