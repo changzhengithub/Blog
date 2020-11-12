@@ -63,6 +63,15 @@ request.onupgradeneeded = function(event) {
 }
 ```
 
+
+删除数据库
+
+每次更新后删除原来的数据库，重新启动。
+
+```js
+window.indexedDB.deleteDatabase(dbName);
+```
+
 ## 创建存储对象
 
 通常，新建数据库以后，第一件事是新建对象仓库（即新建表），表格创建好后就通过，下一步在创建其他索引。
