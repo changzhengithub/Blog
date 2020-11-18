@@ -53,6 +53,7 @@ module.exports = {
             'javascript/常见代码实现',
             'javascript/浏览器端数据库indexedDB',
             'javascript/短轮询、长轮询、长连接和WebSocket',
+            'javascript/ajax原理'
           ]
         },
         {

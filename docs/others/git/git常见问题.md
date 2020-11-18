@@ -59,3 +59,11 @@ git commit -am "init branch" #本地提交
 git checkout -b newbranch #本地新建分支
 git push origin newbranch:newbranch #把本地分支提交到远程上并新建newbranch分支
 ```
+
+## vscode总弹出git登录弹框
+
+打开终端输入
+
+```git
+git config --global credential.helper store
+```

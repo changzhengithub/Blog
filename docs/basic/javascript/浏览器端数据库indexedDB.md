@@ -1,4 +1,4 @@
-b# 浏览器端数据库indexedDB
+# 浏览器端数据库indexedDB
 
 indexedDB和localStorage一样，用来本地存储，但比localStorage存储内存大，并且是异步，如果数据大不会阻塞流程。
 
