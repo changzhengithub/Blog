@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h1>{{message}}</h1>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: '我是vue数据'
+      },
+      beforeCreate() {
+
+        console.log('beforeCreate--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      created() {
+        console.log('created--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      beforeMount() {
+        console.log('beforeMount--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      mounted() {
+        console.log('mounted--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      beforeUpdate() {
+        console.log('beforeUpdate--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      updated() {
+        console.log('updated--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      beforeDestroy() {
+        console.log('beforeDestroy--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      destroyed() {
+        console.log('destroyed--------');
+        console.log('el：'+ this.$el);
+        console.log('data：'+ this.$data);
+        console.log('message：'+ this.message);
+      },
+      methods: {
+        getAttr: function() {
+          console.log(111)
+        }
+      },
+    })
+    // vue的属性和方法都挂载在app上，实际上就是一个对象。
+    console.log(app);
+    console.log(app.$el); // <div id="app"><h1>我是vue数据</h1></div>
+    console.log(app.$data); // {message: '我是vue数据'}
+    console.log(app.getAttr()); // 111
+  </script>
+</body>
+</html>
