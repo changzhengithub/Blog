@@ -76,7 +76,9 @@ module.exports = {
         },
       ],
       '/vue/': [
-        'vue使用this.$refs 打印为undefined'
+        'vue知识点',
+        'vue常见问题',
+        'vue使用this.$refs 打印为undefined',
       ],
       '/react/': [
         'test'

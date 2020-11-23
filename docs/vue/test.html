@@ -4,80 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .active {
+      color: aquamarine;
+    }
+    .font {
+      font-size: 30px;
+    }
+    .weight {
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
-    <h1>{{message}}</h1>
+    <input type="radio" v-model="pick">
+    <input type="checkbox" v-model="toggle" value="hhhhh">
+    <p>{{pick}}</p>
+    <p>{{toggle}}</p>
+
+    <button-counter></button-counter>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        message: '我是vue数据'
-      },
-      beforeCreate() {
-
-        console.log('beforeCreate--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      created() {
-        console.log('created--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      beforeMount() {
-        console.log('beforeMount--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      mounted() {
-        console.log('mounted--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      beforeUpdate() {
-        console.log('beforeUpdate--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      updated() {
-        console.log('updated--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      beforeDestroy() {
-        console.log('beforeDestroy--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      destroyed() {
-        console.log('destroyed--------');
-        console.log('el：'+ this.$el);
-        console.log('data：'+ this.$data);
-        console.log('message：'+ this.message);
-      },
-      methods: {
-        getAttr: function() {
-          console.log(111)
+    // 定义一个名为 button-counter 的新组件
+    Vue.component('button-counter', {
+      data: function () {
+        return {
+          count: 0
         }
       },
+      template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
     })
-    // vue的属性和方法都挂载在app上，实际上就是一个对象。
-    console.log(app);
-    console.log(app.$el); // <div id="app"><h1>我是vue数据</h1></div>
-    console.log(app.$data); // {message: '我是vue数据'}
-    console.log(app.getAttr()); // 111
-  </script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      message: "",
+      pick: "",
+      sex: 'man',
+      toggle: false
+    },
+    methods: {
+      enter: function() {
+        alert(1)
+      }
+    },
+  })
+</script>
 </body>
 </html>
