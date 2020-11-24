@@ -264,9 +264,14 @@ v-if 和 v-show 的区别：
 
 ## 组件
 
-注册一个组件：
+每个组件的data必须是一个函数。
+
+每个组件必须只有一个根元素。
+
+**注册一个组件：**
 
 ```js
+// 全局注册  全局注册后可以在任何地方使用
 // 定义一个名为 button-counter 的新组件
 Vue.component('templateName', {
   data: function () {
@@ -276,15 +281,81 @@ Vue.component('templateName', {
   },
   template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 })
+
+// 局部注册  使用需要在components中注册后才能使用
+var ComponentA = { /* ... */ }
+var ComponentB = { /* ... */ }
+
+new Vue({
+  el: '#app',
+  components: {
+    'component-a': ComponentA,
+    'component-b': ComponentB
+  }
+})
 ```
 
-每个组件的data必须是一个函数。
+## props传值
 
-每个组件必须只有一个根元素。
+props传值遵循单向数据量，只能从父组件向子组件传递。父级组件数据变更，子组件props值也会刷新。子组件要变更props值，最好使用一个本地数据来保存props在更改，不要直接更改props。
 
-父组件向子组件传值使用 `props`
+父组件：
+```html
+<!-- 传递数字、布尔、数组、对象都要使用动态传参 -->
+<blog-post title="Vue" :likes="11" :isPublished="false" :commentIds="[1, 2, 3]" :author="{name: 'xxx', age: 18}"></blog-post>
+```
 
-监听子组件事件：
+子组件：
+
+```js
+// 接收多个值
+// 数组形式
+props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+// 对象形式指定类型
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object,
+  callback: Function,
+  contactsPromise: Promise // or any other constructor
+}
+
+// props验证：
+props: {
+  // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+  propA: Number,
+  // 多个可能的类型
+  propB: [String, Number],
+  // 必填的字符串
+  propC: {
+    type: String,
+    required: true
+  },
+  // 带有默认值的数字
+  propD: {
+    type: Number,
+    default: 100
+  },
+  // 带有默认值的对象
+  propE: {
+    type: Object,
+    // 对象或数组默认值必须从一个工厂函数获取
+    default: function () {
+      return { message: 'hello' }
+    }
+  },
+  // 自定义验证函数
+  propF: {
+    validator: function (value) {
+      // 这个值必须匹配下列字符串中的一个
+      return ['success', 'warning', 'danger'].indexOf(value) !== -1
+    }
+  }
+```
+
+**自定义事件**
 
 通过子组件`$emit`传递事件 和父组件`$on` 来监听
 
@@ -325,4 +396,262 @@ var vm = new Vue({
   }
 })
 ```
+
+
+**通过自定义事件在组件上使用 `v-model`**
+
+在input上实现一个 `v-model` 指令
+```html
+<div id="app">
+  <input type="text" :value="msg" @input="getValue($event)">
+  <p>{{msg}}</p>
+</div>
+```
+```js
+var vm = new Vue({
+  el: '#app',
+  data: {
+    msg: ""
+  },
+  methods: {
+    getValue: function(e) {
+      this.msg = e.target.value
+    }
+  },
+})
+```
+
+通过自定义事件`$emit`在组件上实现 `v-model`指令
+```html
+<div id="app">
+  <!-- 父组件接收到input事件获取value值赋值给msg -->
+  <custom-input :value="msg" @input="getValue"></custom-input>
+  <p>{{msg}}</p>
+</div>
+```
+```js
+// 子组件通过$emit发送一个input事件和value值
+Vue.component('custom-input', {
+  props: ['value'],
+  template: `
+    <input
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+    >
+  `
+})
+
+var vm = new Vue({
+  el: '#app',
+  data: {
+    msg: ''
+  },
+  methods: {
+    getValue: function(value) {
+      this.msg = value
+    }
+  },
+})
+```
+
+现在直接在子组件上使用 `v-model`指令
+```html
+<div id="app">
+  <!-- <custom-input :value="msg" @input="getValue"></custom-input> -->
+  <custom-input v-model="msg"></custom-input>
+  <p>{{msg}}</p>
+</div>
+```
+```js
+// 子组件通过$emit发送一个input事件和value值
+Vue.component('custom-input', {
+  props: ['value'],
+  template: `
+    <input
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+    >
+  `
+})
+```
+来看这两行代码：
+```html
+<custom-input :value="msg" @input="getValue"></custom-input>
+<custom-input v-model="msg"></custom-input>
+```
+
+通过对比，我们直接使用 `v-model` 代替了了 value 的传入和 input 事件的监听，那 value 和 input 从何而来呢?
+
+当我们给组件添加 `v-model` 属性时，默认会把value 作为组件的属性，把 input作为给组件绑定事件时的事件名，所以使用`v-model`就代替了名为 value 的 props 和名为 input 的事件。但如果我们不想使用 value 属性名和自定义事件 input 名字呢，在 Vue 2.2 及以上版本，就可以在定义组件时通过 `model` 选项的方式来定制 props/event 。
+
+```html
+<div id="app">
+  <custom-input v-model="msg"></custom-input>
+  <p>{{msg}}</p>
+</div>
+```
+```js
+Vue.component('custom-input', {
+  // 自定义prop和event
+  model: {
+    prop: 'name',
+    event: 'getName'
+  },
+  props: ['name'],
+  template: `
+    <input
+      :value="name"
+      @input="$emit('getName', $event.target.value)"
+    >
+  `
+})
+```
+
+作用： 来代替在父组件中来回传值和接收值。直接在子组件中定义好发送的事件名和传入的值就可以了。
+```html
+<!-- 父组件 -->
+<div id="app">
+  <calc-num v-model="number"></calc-num>
+  <p>{{number}}</p>
+</div>
+```
+```js
+// 子组件
+Vue.component('calc-num', {
+  model: {
+    prop: 'num',
+    event: 'addNum'
+  },
+  props: {
+    num: Number,
+  },
+  methods: {
+    add() {
+      this.$emit('addNum', this.num + 1)
+    },
+  },
+  template: `
+    <button @click="add">点击按钮自增</button>
+  `
+})
+
+var vm = new Vue({
+  el: '#app',
+  data: {
+    number: 1,
+  },
+})
+```
+
+## 插槽
+
+通过插槽 `<slot>` 来分发内容，给一个占位符，等待插入元素。通过 `<slot>` 在指定的位置添加特殊的元素，而不是在组件创建时就固定好内容，允许在不同的地方调用组件时添加定制化的内容。
+
+子组件 `<son-component>` 中：
+
+```js
+Vue.component('son-component', {
+  props: ['num'],
+  template: `
+    <section>
+      <p>我是子组件</p>
+      <p>父组件数据： {{num}}</p>
+      <slot></slot>
+    </section>
+  `
+})
+```
+在父组件中使用：
+```html
+<div id="app">
+  <p>我是父组件</p>
+  <!-- 使用子组件，在其中插入元素，就会在 slot 的位置显示 -->
+  <son-component :num="number">
+    <span>我是插槽内容 {{number}}</span>
+  </son-component>
+</div>
+```
+
+在父组件中添加就只能获取父组件的作用域，无法获取插槽所在子组件的作用域。
+
+**默认内容：**
+
+在 `<slot>hello</slot>` 添加默认的内容，父组件添加内容就不显示。
+
+**具名插槽（多个插槽）：**
+
+添加多个插槽时，要为每个插槽指定一个特殊属性 `name`。
+```html
+<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <!-- 默认为 default -->
+    <slot></slot> 
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+```
+父组件添加内容：
+
+v-slot 只能添加在 `<template>` 上，default可以不用写，没有被template包裹的视为默认插槽内容。
+```html
+<son-component :num="number">
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <template v-slot:default>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
+  <!-- <p>A paragraph for the main content.</p>
+  <p>And another one.</p> -->
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</son-component>
+```
+
+**作用域插槽：**
+
+在父组件中获取子组件中的数据，可以在子组件 `<slot>` 上绑定子组件数据，传给父组件的 `<template>` 上，这样在父组件定义插槽内容就可以获取子组件的内容了。
+
+子组件：
+
+```html
+<!-- user为子组件数据 -->
+<span>
+  <slot v-bind:user="user"> {{ user.lastName }} </slot>
+</span>
+```
+父组件使用：
+```html
+<!-- 定义一个slotProps的props对象 -->
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+</current-user>
+```
+使用ES6解构
+```html
+<current-user v-slot:default="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+
+
+
+
+
+
+
+
+
 
