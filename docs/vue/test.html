@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,50 +9,47 @@
     .active {
       color: aquamarine;
     }
+
     .font {
       font-size: 30px;
     }
+
     .weight {
       font-weight: bold;
     }
   </style>
 </head>
+
 <body>
   <div id="app">
-    <input type="radio" v-model="pick">
-    <input type="checkbox" v-model="toggle" value="hhhhh">
-    <p>{{pick}}</p>
-    <p>{{toggle}}</p>
-
-    <button-counter></button-counter>
+    <father-com :getage.sync="age"></father-com>
+    <p>{{age}}</p>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
   <script>
-    // 定义一个名为 button-counter 的新组件
-    Vue.component('button-counter', {
-      data: function () {
-        return {
-          count: 0
+    Vue.component('father-com', {
+      props: ['age'],
+      methods: {
+        send() {
+          this.$emit('update:getage', 18)
         }
       },
-      template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+      template: `
+        <div>
+          <button @click="send">发送</button>
+        </div>
+      `
     })
-  var vm = new Vue({
-    el: '#app',
-    data: {
-      message: "",
-      pick: "",
-      sex: 'man',
-      toggle: false
-    },
-    methods: {
-      enter: function() {
-        alert(1)
-      }
-    },
-  })
-</script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        age: 0
+      },
+    })
+  </script>
 </body>
+
 </html>

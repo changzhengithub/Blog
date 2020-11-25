@@ -78,6 +78,8 @@ module.exports = {
       '/vue/': [
         'vue知识点',
         'vue常见问题',
+        '在组件上使用v-model',
+        '组件之间的通信',
         'vue使用this.$refs 打印为undefined',
       ],
       '/react/': [

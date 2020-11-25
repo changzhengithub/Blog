@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .active {
+      color: aquamarine;
+    }
+
+    .font {
+      font-size: 30px;
+    }
+
+    .weight {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- <child-com 
+      :value='obj.value' @aaa='obj.value = $event'
+      :name='obj.name'  @bbb='obj.name = $event'
+      :age='obj.age' @ccc='obj.age = $event'>
+    </child-com> -->
+    <!-- <child-com v-bind:value.sync='obj.value' 
+               v-bind:name.sync="obj.name" 
+               v-bind:age.sync="obj.age">
+    </child-com> -->
+    <child-com v-bind.sync="obj"></child-com>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <script>
+    Vue.component('child-com', {
+      props: ['value','name','age'],
+      methods: {
+        inputValueEvent(event) {
+          this.$emit('update:value', event.target.value)
+        },
+        inputNameEvent(event) {
+          this.$emit('update:name', event.target.value)
+        },
+        inputAgeEvent(event) {
+          this.$emit('update:age', event.target.value)
+        }
+      },
+      template: `
+        <div>
+          <input type="text" :value="value" @input='inputValueEvent'>
+          <br>
+          <input type="text" :value="name" @input='inputNameEvent'>
+          <br>
+          <input type="text" :value="age" @input='inputAgeEvent'>
+        </div>
+      `
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        obj: { value: '双向绑定' , name: 'coderlyl' , age: 20}
+      },
+      methods: {
+        getMsg: function(name) {
+          console.log(name) // xxxxx
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
