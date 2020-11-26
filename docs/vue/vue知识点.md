@@ -21,6 +21,14 @@ vue 实际上就是一个对象，所有属性和方法都被挂载到实例对�
   console.log(app.$el); // <div id="app"><h1>我是vue数据</h1></div>
   console.log(app.$data); // {message: '我是vue数据'}
   console.log(app.getAttr()); // 111
+
+  // `$root`属性也可以获取到
+  // 获取根组件的数据
+  app.$root.message // 111
+  // 写入根组件的数据
+  app.$root.message = '通过$root写入'
+  // 调用根组件的方法
+  app.$root.getAttr() // 111
 ```
 
 ## vue生命周期
@@ -355,9 +363,9 @@ props: {
   }
 ```
 
-**自定义事件**
+## 自定义事件
 
-通过子组件`$emit`传递事件 和父组件`$on` 来监听
+通过子组件`$emit`传递事件然后父组件监听
 
 ```js
 // 子组件
@@ -397,11 +405,13 @@ var vm = new Vue({
 })
 ```
 
-**通过自定义事件在组件上使用 `v-model`**
+## `v-model` 实现数据双向绑定
 
 通过input输入框实现数据双向绑定模式演化成在组件上实现简单数据双向绑定，但是 `v-model` 只能实现一个数据在子组件和父组件之间进行传递，如果要使用多个数据的双向绑定一般手动实现，但也可以用 `.sync` 修饰符来缩写。
 
-`v-model` 和 `.sync` 进行单一的数据双向传递，和多个数据双向传递， 都是可以代替 父子组件相互传值的，简化了父组件的操作，并减少了与父组件的耦合成度，只需要在子组件中定义好，父组件之间使用就可以。 如果要是跨组件来传递数据的话，最好使用 `$attrs` 和 `$listeners` 属性。
+`v-model` 和 `.sync` 进行单一的数据双向传递，和多个数据双向传递， 都是可以代替 父子组件相互传值的，简化了父组件的操作，并减少了与父组件的耦合成度，只需要在子组件中定义好，父组件之间使用就可以。 如果要是跨组件来传递数据的话，使用 `$attrs` 和 `$listeners` 属性对每个组件进行绑定。
+
+`v-model`在组件上实现最主要的是通过 `model` 选项自定义事件名。
 
 在input上实现一个 `v-model` 指令
 ```html
@@ -814,7 +824,7 @@ Vue.component('son-component', {
 
 v-slot 只能添加在 `<template>` 上，default可以不用写，没有被template包裹的视为默认插槽内容。
 ```html
-<son-component :num="number">
+<son-component>
   <template v-slot:header>
     <h1>Here might be a page title</h1>
   </template>
@@ -842,6 +852,8 @@ v-slot 只能添加在 `<template>` 上，default可以不用写，没有被temp
 <!-- user为子组件数据 -->
 <span>
   <slot v-bind:user="user"> {{ user.lastName }} </slot>
+  <!-- 相当于props传值 -->
+  <slot :user="user"> {{ user.lastName }} </slot>
 </span>
 ```
 父组件使用：
@@ -860,13 +872,231 @@ v-slot 只能添加在 `<template>` 上，default可以不用写，没有被temp
 </current-user>
 ```
 
+**具名插槽缩写：**
+
+`v-slot:header` 可以缩写成 `#header`
+```html
+<son-component>
+  <template #header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <template #default="{user}">
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
+
+  <template #footer>
+    <p>Here's some contact info</p>
+  </template>
+</son-component>
+```
+**插槽复用**
+
+在一个循环列表里定义一个具名插槽，可以实现循环来使用同一个插槽。
+```html
+<ul>
+  <li v-for="todo in todos" :key="todo.id" >
+    <!--
+    我们为每个 todo 准备了一个插槽，
+    将 `todo` 对象作为一个插槽的 prop 传入。
+    -->
+    <slot name="todo" :todo="todo">
+      <!-- 默认内容 -->
+      {{ todo.text }}
+    </slot>
+  </li>
+</ul>
+```
+使用：
+```html
+<todo-list :todos="todos">
+  <template #todo="{ todo }">
+    <span v-if="todo.isComplete">✓</span>
+    {{ todo.text }}
+  </template>
+</todo-list>
+```
+
+## 动态组件 & 异步组件
+
+动态组件通过 `<component>` 切换不同的组件名来显示组件
+```html
+<!-- 组件会在 `currentTabComponent` 改变时改变 -->
+<component :is="currentTabComponent"></component>
+```
+
+**`<keep-alive>` 缓存组件：**
+
+被 `keep-alive` 包裹的组件不会重新刷新，还会保留离开时的状态。
+
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component :is="currentTabComponent"></component>
+</keep-alive>
+```
+
+```html
+<!-- 和 `<transition>` 一起使用 -->
+<transition>
+  <keep-alive>
+    <component :is="view"></component>
+  </keep-alive>
+</transition>
+```
+
+`include` 和 `exclude` 来过滤要缓存的组件和不要缓存的组件 或者路由。都可以用逗号分隔字符串、正则表达式或一个数组来表示。
+
+```html
+<!-- 逗号分隔字符串 -->
+<keep-alive include="a,b">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 数组 -->
+<keep-alive :include="['a', 'b']">
+  <component :is="view"></component>
+</keep-alive>
+
+<!-- 配合路由一起使用，匹配要缓存的路由 -->
+<keep-alive :include="['IndexComponent']">
+  <router-view/>
+</keep-alive>
+```
+异步路由和组件：
+
+```js
+// router中异步加载路由
+const IndexComponent = () => import(/* webpackChunkName: 'indexs' */ '@/views/index/index.vue')
+
+// 组件中异步加载组件
+components: {
+  'my-component': () => import('./my-async-component')
+}
+```
+
+## 处理边界情况
+
+**通过访问父组件实例 `$parent`：**
+
+```js
+this.$parent  // 获取父组件实例
+this.$parent.name  // 获取父组件数据
+this.$parent.getValue() // 调用父组件方法
+```
+
+**访问子组件实例 `ref`/ `$children`：**
+
+```js
+this.$refs.son   // 获取子组件
+this.$refs.son.age // 获取子组件数据
+this.$refs.son.getAttr() // 调用子组件方法
+
+this.$children     // 获取子组件数组
+this.$children[0].age  // 获取子组件数据
+this.$children[0].getAttr() // 调用子组件方法
+```
+
+**依赖注入：**
+
+`provide`/`inject` 这对选项需要一起使用，以允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在其上下游关系成立的时间里始终生效。可以把依赖注入看作一部分“大范围有效的 prop”。
+
+* `provide` 选项应该是一个对象或返回一个对象的函数。
+* `inject` 选项应该是一个字符串数组，或一个对象
+
+:::tip
+提示：provide 和 inject 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的 property 还是可响应的。
+:::
+
+提供属性：
+```js
+// 父级组件提供 'foo'
+var Provider = {
+  provide: {
+    foo: 'bar'
+  },
+  // ...
+}
+
+// 子组件注入 'foo'
+var Child = {
+  inject: ['foo'],
+  created () {
+    console.log(this.foo) // => "bar"
+  }
+  // ...
+}
+```
+提供方法：
+```js
+// 父级组件提供 'getMap' 方法
+var Provider = {
+  provide: function () {
+    return {
+      getName: this.getName,
+      msg: this.msg
+    }
+  }
+  methods: {
+    getName: function() {
+      console.log('chang')
+    },
+  },
+}
+// 子组件注入 'getName'
+var Child = {
+  inject: ['getName', 'msg'],
+  created () {
+    console.log(this.msg) //
+    console.log(this.getName()) // => 'chang'
+  }
+}
+```
+
+**程序化的事件侦听器**
+
+* 通过 `$on(eventName, eventHandler)` 侦听一个事件
+* 通过 `$once(eventName, eventHandler)` 一次性侦听一个事件
+* 通过 `$off(eventName, eventHandler)` 停止侦听一个事件
+
+`$once` 一次性监听一个事件可以使用与监听引入的第三方插件，进来时只需要监听一次，然后就不需要手动来清除了。比如监听日期组件picker 或者swiper或者是计时器。
+
+```js
+mounted: function () {
+  this.timeCycle();
+  this.attachDatepicker('startDateInput')
+  this.attachDatepicker('endDateInput')
+},
+methods: {
+  attachDatepicker(refName) {
+    var picker = new Pikaday({
+      field: this.$refs[refName],
+      format: 'YYYY-MM-DD'
+    })
+
+    this.$once('hook:beforeDestroy', function () {
+      picker.destroy()
+    })
+  },
+  timeCycle () {
+    window.clearInterval(this.ticker)
+    this.ticker = setInterval(this.countDown, 1000)
+    this.$once('hook:beforeDestroy', () => {
+      window.clearInterval(this.ticker)                                 
+    })
+  },
+}
+```
+**循环引用**
+
+递归组件：
+
+在自己当中调用自己，比如菜单栏，一级一级打开，发现模式都是一样，这样就可以使用递归，在自己的列表中渲染自己。
+
+递归组件一定要定义组件的 `name` 并且每次调用时要加上判断条件。
 
 
+**`v-once` 创建低开销的静态组件**
 
-
-
-
-
-
-
-
+如果一个组件中有大量的静态内容，在根元素添加 `v-once` 属性可以确保这些内容只计算一次然后缓存起来。

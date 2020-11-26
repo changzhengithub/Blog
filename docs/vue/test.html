@@ -32,14 +32,46 @@
   <script>
     Vue.component('father-com', {
       props: ['age'],
-      methods: {
-        send() {
-          this.$emit('update:getage', 18)
+      provide: function () {
+        return {
+          getValue: this.getValue
         }
+      },
+      data: function() {
+        return {
+          name: 'xxx'
+        }
+      },
+      methods: {
+        getValue: function() {
+          console.log('dfdfafaffa')
+        },
       },
       template: `
         <div>
-          <button @click="send">发送</button>
+          <son-com></son-com>
+          <button @click="getValue">发送</button>
+        </div>
+      `
+    })
+    Vue.component('son-com', {
+      inject: ['getValue'],
+      data: function() {
+        return {
+          age: 1888
+        }
+      },
+      created() {
+        this.getValue();
+      },
+      methods: {
+        getAttr: function() {
+          console.log('jdsjflajj')
+        },
+      },
+      template: `
+        <div>
+          <p >xxxxxxxxxxxxxxxxxxxxx</p>
         </div>
       `
     })
