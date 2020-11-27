@@ -1100,3 +1100,326 @@ methods: {
 **`v-once` 创建低开销的静态组件**
 
 如果一个组件中有大量的静态内容，在根元素添加 `v-once` 属性可以确保这些内容只计算一次然后缓存起来。
+
+
+## 过渡&动画
+
+### 单元素/组件的过渡
+
+在 transition 组件中实现过渡效果，实现条件：
+
+* 条件渲染 (使用 v-if)
+* 条件展示 (使用 v-show)
+* 动态组件
+* 组件根节点
+
+**过渡类名：**
+
+过渡一般都是通过定义name 的 css类名样式来设置过渡效果的，`v-enter-active` 和 `v-leave-active` 是设置进入和离开时的效果的，比如设置 `transition` 和 `transition` 等； `v-enter` 和 `v-leave-to` 一般是设置 进入时的初始样式 和离开后的样式； `v-enter-to` 和 `v-leave` 是设置元素进入结束的样式和元素开始离开的样式，因为这两个样式就是元素在页面正常显示的样式，所以一般不用写。
+
+**使用过渡：**
+```css
+.fade-enter-active {
+  transition: all .3s ease;
+}
+
+.fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.fade-enter, .fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+```
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+```js
+new Vue({
+  el: '#demo',
+  data: {
+    show: true
+  }
+})
+```
+
+**使用动画：**
+```css
+.fade-enter-active {
+  animation: bounce-in .5s;
+}
+
+.fade-leave-active {
+  animation: bounce-in .5s reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+```
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+**配合使用第三方动画库：**
+
+通过自定义过渡类名 `enter-active-class` 和 `enter-active-class` 配合第三方动画库animate.css 实现进入和离开的动画效果。
+
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition enter-active-class="animated tada"
+    leave-active-class="animated bounceOutRight">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+
+**显性的过渡持续时间**
+
+使用 `duration` 为过渡进入和离开设置时间，不论其他样式怎么设置，进入和离开都是`duration`设置的时间。下面 shake 动画一个执行1000毫秒才离开，进入执行500毫秒才停止。
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition enter-active-class="animated shake"
+    leave-active-class="animated shake" 
+    :duration="{ enter: 500, leave: 1000 }">
+      <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+
+**JavaScript 钩子**
+```html
+<transition
+  @before-enter="beforeEnter"
+  @enter="enter"
+  @after-enter="afterEnter"
+  @enter-cancelled="enterCancelled"
+
+  @before-leave="beforeLeave"
+  @leave="leave"
+  @after-leave="afterLeave"
+  @leave-cancelled="leaveCancelled"
+>
+</transition>
+```
+```js
+// 通过 el 获取 DOM元素进行样式设置
+methods: {
+  beforeEnter: function (el) {},
+  // 当与 CSS 结合使用时
+  // 回调函数 done 是可选的
+  enter: function (el, done) {done()},
+  afterEnter: function (el) {},
+  enterCancelled: function (el) {},
+
+  beforeLeave: function (el) {},
+  // 当与 CSS 结合使用时
+  // 回调函数 done 是可选的
+  leave: function (el, done) {done()},
+  afterLeave: function (el) {},
+  // leaveCancelled 只用于 v-show 中
+  leaveCancelled: function (el) {}
+}
+```
+
+### 初始渲染的过渡
+
+通过 `appear` 属性设置元素第一次进入页面时的动画，直接添加 `appear` 属性则是进入时的过渡效果，也可以通过appear类名或者appear钩子来设置第一次进入的动画。不影响name设置的进入和离开的动画。
+
+```html
+<!-- 默认使用进场动画 -->
+<transition appear>
+  <!-- ... -->
+</transition>
+
+<!-- css 类名 -->
+<transition
+  appear
+  appear-class="custom-appear-class"
+  appear-to-class="custom-appear-to-class" (2.1.8+)
+  appear-active-class="custom-appear-active-class"
+>
+  <!-- ... -->
+</transition>
+
+<!-- js钩子 -->
+<transition
+  appear
+  v-on:before-appear="customBeforeAppearHook"
+  v-on:appear="customAppearHook"
+  v-on:after-appear="customAfterAppearHook"
+  v-on:appear-cancelled="customAppearCancelledHook"
+>
+  <!-- ... -->
+</transition>
+```
+
+### 多个元素过渡
+
+单个元素是通过显示和隐藏把离场动画和入场动画都作用于一个元素上面，而多个元素是离场和入场动画分别作用于两个元素上面，通过条件判断显示不同的元素，让离场动画作用于离开的元素，进场动画作用在进入的元素。如选项卡的切换，轮播图的切换等过渡动画都可以使用。
+
+:::tip
+当有相同标签名的元素切换时，需要通过 key attribute 设置唯一的值来标记以让 Vue 区分它们，否则 Vue 为了效率只会替换相同标签内部的内容。即使在技术上没有必要，给在 <transition> 组件中的多个元素设置 key 是一个更好的实践。
+:::
+
+一个简单切换效果：
+```css
+.fade-enter-active {
+  transition: all 1s;
+}
+
+.fade-leave-active {
+  transition: all 1s;
+}
+.fade-enter {
+  /* transform: translateX(100%); */
+  opacity: 0;
+}
+.fade-leave-to {
+  /* transform: translateX(-100%); */
+  opacity: 0;
+}
+```
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade" >
+    <button class="box" v-if="show" key="Save">Save</button>
+    <button class="box" v-if="!show" key="Edit">Edit</button>
+  </transition>
+</div>
+```
+
+过渡模式：
+
+* `in-out`：新元素先进行过渡，完成之后当前元素过渡离开。
+
+* `out-in`：当前元素先进行过渡，完成之后新元素过渡进入。
+
+这两种模式 `out-in` 模式虽然看起来效果好一点，但是效果不够连贯，一个消失后才显示另一个。要想过渡比较连贯，一个开始消失，另一个就开始显示另一个可以使用 `position: absolute;` 让所有元素都浮动起来，这样切换效果就会连贯起来了。
+
+一个滑动离开一个滑动进入效果：
+```css
+.fade-enter-active, .fade-leave-active {
+  transition: all 1s;
+}
+/* 定义离开和进入效果 */
+.fade-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.fade-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+/* 元素都浮动起来 */
+.btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+}
+```
+```html
+<div id="app">
+  <button @click="isEditing = !isEditing">切换状态</button>
+  <transition name="fade">
+    <button class="btn" v-if="isEditing" key="Save">Save</button>
+    <button class="btn" v-if="!isEditing" key="Edit">Edit</button>
+  </transition>
+</div>
+```
+
+一个滑动离开后一个再显示效果： 
+
+配合 `mode="out-in"` 模式使用，不使用绝对定位
+```css
+.fade-enter-active, .fade-leave-active {
+  transition: all 1s;
+}
+/* 定义离开和进入效果 */
+.fade-enter {
+  opacity: 0;
+}
+.fade-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+```
+```html
+<div id="app">
+  <button @click="isEditing = !isEditing">切换状态</button>
+  <transition name="fade" mode="out-in">
+    <button class="btn" v-if="isEditing" key="Save">Save</button>
+    <button class="btn" v-if="!isEditing" key="Edit">Edit</button>
+  </transition>
+</div>
+```
+
+一个显示一个消失效果： 
+
+绝对定位 和 `mode="out-in"` 模式使用哪个模式都可以，两个一起使用也可以。
+```css
+.fade-enter-active, .fade-leave-active {
+  transition: all 1s;
+}
+/* 定义离开和进入效果 */
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.btn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+}
+```
+```html
+<div id="app">
+  <button @click="isEditing = !isEditing">切换状态</button>
+  <transition name="fade" mode="out-in">
+    <button class="btn" v-if="isEditing" key="Save">Save</button>
+    <button class="btn" v-if="!isEditing" key="Edit">Edit</button>
+  </transition>
+</div>
+```
+
+### 多个组件过渡
+
+多个组件的过渡不需要使用 key 属性。只需要使用动态组件就可以了，其他的设置效果和多个元素设置效果一样。
+
+```html
+<transition name="fade">
+  <component :is="componentName"></component>
+</transition>
+```

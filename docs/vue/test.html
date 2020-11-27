@@ -5,80 +5,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   <style>
-    .active {
-      color: aquamarine;
+    .fade-enter-active {
+      transition: all 1s;
     }
 
-    .font {
-      font-size: 30px;
+    .fade-leave-active {
+      transition: all 1s;
     }
-
-    .weight {
-      font-weight: bold;
+    .fade-enter {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    .fade-leave-to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    .box {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 9;
     }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <father-com :getage.sync="age"></father-com>
-    <p>{{age}}</p>
+    <button style="margin-top: 50px;" @click="getAnimate">xxxxxxxxxx</button>
+    <!-- <transition name="fade" >
+      <button class="box" v-if="isEditing" key="Save">Save</button>
+      <button class="box" v-if="!isEditing" key="Edit">Edit</button>
+    </transition> -->
+    <transition name="fade">
+      <component :is="view"></component>
+    </transition>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <!-- <script src="https://unpkg.com/vue@next"></script> -->
   <script>
-    Vue.component('father-com', {
-      props: ['age'],
-      provide: function () {
-        return {
-          getValue: this.getValue
-        }
-      },
-      data: function() {
-        return {
-          name: 'xxx'
-        }
-      },
-      methods: {
-        getValue: function() {
-          console.log('dfdfafaffa')
-        },
-      },
-      template: `
-        <div>
-          <son-com></son-com>
-          <button @click="getValue">发送</button>
-        </div>
-      `
-    })
-    Vue.component('son-com', {
-      inject: ['getValue'],
-      data: function() {
-        return {
-          age: 1888
-        }
-      },
-      created() {
-        this.getValue();
-      },
-      methods: {
-        getAttr: function() {
-          console.log('jdsjflajj')
-        },
-      },
-      template: `
-        <div>
-          <p >xxxxxxxxxxxxxxxxxxxxx</p>
-        </div>
-      `
-    })
     var vm = new Vue({
       el: '#app',
       data: {
-        age: 0
+        isEditing: true,
+        view: 'v-a'
+      },
+      components: {
+        'v-a': {
+          template: '<div class="box">Component A</div>'
+        },
+        'v-b': {
+          template: '<div class="box">Component B</div>'
+        }
+      },
+      methods: {
+        getAnimate: function() {
+          this.isEditing = !this.isEditing
+          this.view = this.isEditing ? 'v-a' : 'v-b'
+        }
       },
     })
   </script>
