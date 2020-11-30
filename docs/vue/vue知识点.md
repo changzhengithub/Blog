@@ -1320,7 +1320,7 @@ methods: {
 </div>
 ```
 
-过渡模式：
+过渡模式mode：
 
 * `in-out`：新元素先进行过渡，完成之后当前元素过渡离开。
 
@@ -1423,3 +1423,127 @@ methods: {
   <component :is="componentName"></component>
 </transition>
 ```
+
+### 列表过渡
+
+单个元素和多个元素过渡，都只是同一时间渲染一个元素，要同时渲染多个，比如列表这种，使用 `<transition-group>` 组件，其特点为：
+
+* 不同于 `<transition>`，它会以一个真实元素呈现：默认为一个 `<span>`。你也可以通过 `tag` 属性更换为其他元素。
+* **过渡模式**不可用，因为我们不再相互切换特有的元素。
+* 内部元素总是需要提供唯一的 key 属性值。
+* CSS 过渡的类将会应用在内部的元素中，而不是这个组/容器本身。
+
+`<transition-group>` 组件不仅使列表的单个元素在进行显示消失时有一个过渡，还可以改变定位，并在改变定位时实现一个动画效果，可以使用 `v-move` 在其中定义 `transition` 属性，实现过渡切换。
+
+```css
+.list-item {
+  transition: all 1s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active {
+  transition: all 1s;
+}
+.list-leave-active {
+  position: absolute;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+```
+```html
+<div id="app">
+  <button v-on:click="add">Add</button>
+  <button v-on:click="remove">Remove</button>
+  <button v-on:click="shuffle">Shuffle</button>
+  <transition-group name="list" tag="p">
+    <span v-for="item in items" v-bind:key="item" class="list-item">
+      {{ item }}
+    </span>
+  </transition-group>
+</div>
+```
+```js
+var vm = new Vue({
+  el: '#app',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9],
+    nextNum: 10
+  },
+  methods: {
+    randomIndex: function () {
+      return Math.floor(Math.random() * this.items.length)
+    },
+    add: function () {
+      this.items.splice(this.randomIndex(), 0, this.nextNum++)
+    },
+    remove: function () {
+      this.items.splice(this.randomIndex(), 1)
+    },
+    shuffle: function () {
+      this.items = _.shuffle(this.items)
+    }
+  }
+})
+```
+
+组件使用过渡：
+
+将 `<transition>` 作为根组件，元素放在其中，判断条件在 created 声明周期中设置为显示，这样组件从消失到显示就可以为其设置过渡效果。
+
+## 混入
+
+混入 (mixin) 来分发 Vue 组件中的可复用功能。把多个组件中具有相同方法或者数据提取出来，然后使用mixin混入到需要的组件中。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
+
+数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。
+
+v-cli中使用：
+
+定义一个mixin.js文件
+```js
+// mixin.js
+export const toggle = {
+  data () {
+    isshowing: false
+  },
+  created() {
+    console.log(1111)
+  },
+  methods: {
+    toggleShow() {
+      this.isshowing = !this.isshowing
+    }
+  }
+}
+```
+
+其他组件引入：
+```js
+import { mixin } from 'mixin.js'
+
+export default {
+  mixins: [mixin],
+  created() {
+
+  },
+  mounted () {
+      
+  }
+}
+```
+
+全局混入：
+```js
+// main.js
+Vue.mixin({
+  mounted() {
+    console.log("我是mixin");
+  }
+})
+```
+
+## 自定义指令
+
+
+

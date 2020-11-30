@@ -6,70 +6,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    .active {
-      color: aquamarine;
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      box-sizing: border-box;
+      border: none;
+      outline: none;
     }
-
-    .font {
-      font-size: 30px;
+    .wrap {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      margin: 0 auto;
+      border: 1px solid #999;
+      overflow: hidden;
     }
-
-    .weight {
+    .wrap-nav {
+      display: flex;
+      width: 100%;
+      height: 50px;
+      overflow: auto;
+      cursor: pointer;
+    }
+    .nav-item {
+      width: 100px;
+      height: 100%;
+      line-height: 50px;
+      text-align: center;
+    }
+    .nav-active {
+      font-size: 20px;
       font-weight: bold;
+    }
+    .wrap-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+    .list-item {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 9;
+      width: 100%;
+      height: 100%;
+      font-size: 20px;
+      color: coral;
+      line-height: 90px;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+
+    /* 左滑 */
+    .fadel-enter-active, .fadel-leave-active {
+      transition: all 0.6s linear;
+    }
+    .fadel-enter {
+      transform: translateX(100%);
+      opacity: 1;
+    }
+    .fadel-leave-to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    /* 右滑 */
+    .fader-enter-active, .fader-leave-active {
+      transition: all 0.6s linear;
+    }
+    /* 定义离开和进入效果 */
+    .fader-enter {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+    .fader-leave-to {
+      transform: translateX(100%);
+      opacity: 0;
     }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <!-- <child-com 
-      :value='obj.value' @aaa='obj.value = $event'
-      :name='obj.name'  @bbb='obj.name = $event'
-      :age='obj.age' @ccc='obj.age = $event'>
-    </child-com> -->
-    <!-- <child-com v-bind:value.sync='obj.value' 
-               v-bind:name.sync="obj.name" 
-               v-bind:age.sync="obj.age">
-    </child-com> -->
-    <child-com v-bind.sync="obj"></child-com>
+    <div class="wrap">
+      <div class="wrap-nav">
+        <div class="nav-item" :class="{'nav-active': activeIndex == index}" v-for="(item, index) in navList" @click="switchNav(index)">{{item}}</div>
+      </div>
+      <div class="wrap-container">
+        <transition :name="transitionName">
+          <div v-if="activeIndex == index" class="list-item" v-for="(item, index) in detailList" :key="index" 
+            @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+            <span>{{item}}</span>
+          </div>
+        </transition>
+      </div>
+    </div>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <!-- <script src="https://unpkg.com/vue@next"></script> -->
   <script>
-    Vue.component('child-com', {
-      props: ['value','name','age'],
-      methods: {
-        inputValueEvent(event) {
-          this.$emit('update:value', event.target.value)
-        },
-        inputNameEvent(event) {
-          this.$emit('update:name', event.target.value)
-        },
-        inputAgeEvent(event) {
-          this.$emit('update:age', event.target.value)
-        }
-      },
-      template: `
-        <div>
-          <input type="text" :value="value" @input='inputValueEvent'>
-          <br>
-          <input type="text" :value="name" @input='inputNameEvent'>
-          <br>
-          <input type="text" :value="age" @input='inputAgeEvent'>
-        </div>
-      `
-    })
 
     var vm = new Vue({
       el: '#app',
       data: {
-        obj: { value: '双向绑定' , name: 'coderlyl' , age: 20}
+        activeIndex: 0,
+        timer: null,
+        transitionName: 'fadel',
+        navList: ['待付款', '待收货', '待评价', '全部订单', '售后'],
+        detailList: [
+          '我是待付款',
+          '我是待收货',
+          '我是待评价',
+          '我是全部订单',
+          '我是售后',
+        ],
+        touchPageX: 0,
+        touchPageY: 0,
+        touchScale: 0,
+        touchPageXMounts: 0,
+        touchPageYMounts: 0, 
       },
       methods: {
-        getMsg: function(name) {
-          console.log(name) // xxxxx
+        switchNav: function(index) {
+          if (this.activeIndex === index) return
+          if (this.activeIndex > index) {
+            this.transitionName = 'fader'
+          } else {
+            this.transitionName = 'fadel'
+          }
+          this.activeIndex = index
+        },
+        touchStart: function(event) {
+          this.touchPageX = event.targetTouches[0].pageX
+          this.touchPageY = event.targetTouches[0].pageY
+        },
+        touchMove: function(event) {
+          this.touchPageXMounts = this.touchPageX - event.targetTouches[0].pageX
+          this.touchPageYMounts = this.touchPageY - event.targetTouches[0].pageY
+        },
+        touchEnd: function(event) {
+          if (Math.abs(this.touchPageYMounts) > Math.abs(this.touchPageXMounts)) return
+          var screenWidth = screen.width
+          this.touchScale = parseFloat(this.touchPageXMounts / screenWidth).toFixed(2)
+          if (Math.abs(this.touchScale) < 0.20) return
+          if (this.touchScale > 0.20) this.touchLeft()
+          if (this.touchScale < -0.20) this.touchRight();
+        },
+        touchLeft: function() {
+          this.transitionName = 'fadel'
+          this.activeIndex++
+          if (this.activeIndex >= this.detailList.length) {
+            this.activeIndex = 0
+          }
+        },
+        touchRight: function() {
+          this.transitionName = 'fader'
+          this.activeIndex--
+          if (this.activeIndex < 0) {
+            this.activeIndex = this.detailList.length - 1
+          }
         }
       }
     })
