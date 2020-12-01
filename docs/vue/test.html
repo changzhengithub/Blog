@@ -33,39 +33,22 @@
 
 <body>
   <div id="app">
-    <button style="margin-top: 50px;" @click="getAnimate">xxxxxxxxxx</button>
-    <!-- <transition name="fade" >
-      <button class="box" v-if="isEditing" key="Save">Save</button>
-      <button class="box" v-if="!isEditing" key="Edit">Edit</button>
-    </transition> -->
-    <transition name="fade">
-      <component :is="view"></component>
-    </transition>
+    <h3>{{message | ￥}}</h3>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script>
+    Vue.filter('lower', function(value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    })
     var vm = new Vue({
       el: '#app',
       data: {
-        isEditing: true,
-        view: 'v-a'
-      },
-      components: {
-        'v-a': {
-          template: '<div class="box">Component A</div>'
-        },
-        'v-b': {
-          template: '<div class="box">Component B</div>'
-        }
-      },
-      methods: {
-        getAnimate: function() {
-          this.isEditing = !this.isEditing
-          this.view = this.isEditing ? 'v-a' : 'v-b'
-        }
-      },
+        message: 300
+      }
     })
   </script>
 </body>

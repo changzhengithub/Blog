@@ -68,19 +68,46 @@ module.exports = {
           ]
         },
         {
-          title: 'Problem',
+          title: 'Faq',
           collapsable: true,
           children: [
-            'problem/a标签在IE中无法下载',
+            'faq/a标签在IE中无法下载',
           ]
         },
       ],
       '/vue/': [
-        'vue知识点',
-        'vue常见问题',
-        '在组件上使用v-model',
-        '组件之间的通信',
-        'vue使用this.$refs 打印为undefined',
+        {
+          title: '基础内容',
+          collapsable: true,
+          children: [
+            'basic/vue知识点',
+            'basic/在组件上使用v-model',
+            'basic/组件之间的通信',
+            'basic/vue过渡效果实现',
+          ]
+        },
+        {
+          title: 'Vue Router',
+          collapsable: true,
+          children: [
+            'route/vue路由',
+          ]
+        },
+        {
+          title: 'Vuex',
+          collapsable: true,
+          children: [
+            'vuex/vuex状态管理器',
+          ]
+        },
+        {
+          title: 'Faq',
+          collapsable: true,
+          children: [
+            'faq/vue常见问题',
+            'faq/vue使用this.$refs 打印为undefined',
+          ]
+        }
       ],
       '/react/': [
         'test'

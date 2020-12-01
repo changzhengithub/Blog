@@ -1,1 +1,0 @@
-# api/detail/test2
