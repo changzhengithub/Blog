@@ -81,6 +81,7 @@ module.exports = {
           collapsable: true,
           children: [
             'basic/vue知识点',
+            'basic/vue风格指南',
             'basic/在组件上使用v-model',
             'basic/组件之间的通信',
             'basic/vue过渡效果实现',

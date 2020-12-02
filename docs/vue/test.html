@@ -7,48 +7,84 @@
   <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   <style>
-    .fade-enter-active {
-      transition: all 1s;
-    }
 
-    .fade-leave-active {
-      transition: all 1s;
-    }
-    .fade-enter {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    .fade-leave-to {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    .box {
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 9;
-    }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <h3>{{message | ￥}}</h3>
+    <h1>Hello App!</h1>
+    <p>
+      <!-- 使用 router-link 组件来导航. -->
+      <!-- 通过传入 `to` 属性指定链接. -->
+      <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+      <router-link :to="'/foo/'+id">Go to Foo</router-link>
+      <router-link to="/bar">Go to Bar</router-link>
+    </p>
+
+    <button @click="toBar">Bar</button>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-router/dist/vue-router.js"></script>
   <script>
-    Vue.filter('lower', function(value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
+    const Foo = {
+      created() {
+        console.log(this.$route.params)
+      },
+      template: '<div>foo</div>' 
+    }
+    const Bar = { template: '<div>bar</div>' }
+
+    const routes = [
+      { 
+        path: '/foo/:id', 
+        component: Foo,
+        meta: {
+          requiresAuth: true,
+          isPower: true
+        } 
+      },
+      { 
+        path: '/bar', 
+        component: Bar 
+      }
+    ]
+
+    const router = new VueRouter({
+      routes // (缩写) 相当于 routes: routes
     })
+
+    router.beforeEach((to, from, next) => {
+      console.log(to)
+      console.log(from)
+      next();
+    })
+    router.afterEach((to, from) => {
+      console.log(to)
+      console.log(from)
+    })
+
     var vm = new Vue({
       el: '#app',
+      router,
       data: {
-        message: 300
-      }
+        message: 300,
+        id: 123
+      },
+      created() {
+        console.log(this.$route)
+        console.log(this.$router)
+      },
+      methods: {
+        toBar: function() {
+          this.$router.push('bar')
+        }
+      },
     })
   </script>
 </body>
