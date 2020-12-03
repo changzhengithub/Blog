@@ -13,78 +13,86 @@
 
 <body>
   <div id="app">
+    <button @click="addCount">Add Count</button>
     <h1>Hello App!</h1>
-    <p>
-      <!-- 使用 router-link 组件来导航. -->
-      <!-- 通过传入 `to` 属性指定链接. -->
-      <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-      <router-link :to="'/foo/'+id">Go to Foo</router-link>
-      <router-link to="/bar">Go to Bar</router-link>
-    </p>
-
-    <button @click="toBar">Bar</button>
-    <!-- 路由出口 -->
-    <!-- 路由匹配到的组件将渲染在这里 -->
-    <router-view></router-view>
+    <p>{{$store.state.count}}</p>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue-router/dist/vue-router.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuex@3.6.0/dist/vuex.min.js"></script>
   <script>
-    const Foo = {
-      created() {
-        console.log(this.$route.params)
-      },
-      template: '<div>foo</div>' 
-    }
-    const Bar = { template: '<div>bar</div>' }
+    const INCREMENT = 'INCREMENT'
 
-    const routes = [
-      { 
-        path: '/foo/:id', 
-        component: Foo,
-        meta: {
-          requiresAuth: true,
-          isPower: true
-        } 
+    const store = new Vuex.Store({
+      state: {
+        count: 0,
+        list: [1, 3, 4, 5, 6, 7],
+        todos: [
+          { id: 1, text: '...', done: true },
+          { id: 2, text: '...', done: false }
+        ]
       },
-      { 
-        path: '/bar', 
-        component: Bar 
+      getters: {
+        listCount: function(state) {
+          return state.list.length
+        },
+        doneTodos: state => {
+          return state.todos.filter(todo => todo.done)
+        },
+        doneTodosCount: (state, getters) => {
+          return getters.doneTodos.length
+        },
+        getTodoById: (state) => (id) => {
+          return state.todos.find(todo => todo.id === id)
+        }
+      },
+      mutations: {
+        [INCREMENT] (state, payload) {
+          state.count += payload.amount
+        }
+      },
+      actions: {
+        incrementAsync ({ commit }, payload) {
+          commit('increment', payload)
+        }
       }
-    ]
-
-    const router = new VueRouter({
-      routes // (缩写) 相当于 routes: routes
-    })
-
-    router.beforeEach((to, from, next) => {
-      console.log(to)
-      console.log(from)
-      next();
-    })
-    router.afterEach((to, from) => {
-      console.log(to)
-      console.log(from)
     })
 
     var vm = new Vue({
       el: '#app',
-      router,
+      store,
       data: {
-        message: 300,
-        id: 123
+        amount: 0,
       },
       created() {
-        console.log(this.$route)
-        console.log(this.$router)
+        console.log(this.count)
+        
       },
       methods: {
-        toBar: function() {
-          this.$router.push('bar')
-        }
+        // increment: function() {
+        //   this.$store.commit('increment')
+        //   console.log(this.$store.state.count)
+        // },
+        addCount: function() {
+          this[INCREMENT]({
+            amount: 10
+          })
+          // this.incrementAsync({
+          //   type: 'incrementAsync',
+          //   amount: 10
+          // })
+        },
+        ...Vuex.mapActions(['incrementAsync']),
+        ...Vuex.mapMutations(['INCREMENT'])
       },
+      computed: {
+        ...Vuex.mapState(['count']),
+      //   ...mapGetters([
+      //   'doneTodos',
+      //   'getTodoById'
+      // ])
+      }
     })
   </script>
 </body>

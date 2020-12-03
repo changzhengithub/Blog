@@ -96,7 +96,7 @@ const router = new VueRouter({
 // 从而让整个应用都有路由功能
 var vm = new Vue({
   el: '#app',
-  router,
+  router, // 根实例注册router，注入所有子组件
   data: {
     message: 300
   }
