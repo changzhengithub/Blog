@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>v-cli添加路由 | Chang&#39;s blog</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/logo.ico">
+    <meta name="description" content="我的个人博客，记录点滴">
+    <link rel="preload" href="/assets/css/0.styles.7950d16d.css" as="style"><link rel="preload" href="/assets/js/app.2c1617c9.js" as="script"><link rel="preload" href="/assets/js/2.85410337.js" as="script"><link rel="preload" href="/assets/js/63.e3c8d15e.js" as="script"><link rel="prefetch" href="/assets/js/10.57285954.js"><link rel="prefetch" href="/assets/js/11.6e58a70e.js"><link rel="prefetch" href="/assets/js/12.4fff14fc.js"><link rel="prefetch" href="/assets/js/13.ade7568a.js"><link rel="prefetch" href="/assets/js/14.662606a5.js"><link rel="prefetch" href="/assets/js/15.b12fcb74.js"><link rel="prefetch" href="/assets/js/16.ee28b3f6.js"><link rel="prefetch" href="/assets/js/17.21d32232.js"><link rel="prefetch" href="/assets/js/18.0af5d2cb.js"><link rel="prefetch" href="/assets/js/19.46bc1aaf.js"><link rel="prefetch" href="/assets/js/20.98de88c9.js"><link rel="prefetch" href="/assets/js/21.575b8c41.js"><link rel="prefetch" href="/assets/js/22.d8782964.js"><link rel="prefetch" href="/assets/js/23.310bfdf8.js"><link rel="prefetch" href="/assets/js/24.a4a9a1fd.js"><link rel="prefetch" href="/assets/js/25.fd159b32.js"><link rel="prefetch" href="/assets/js/26.8c144e6f.js"><link rel="prefetch" href="/assets/js/27.a47b2da2.js"><link rel="prefetch" href="/assets/js/28.e33d6bdf.js"><link rel="prefetch" href="/assets/js/29.5f6648ab.js"><link rel="prefetch" href="/assets/js/3.d8a31682.js"><link rel="prefetch" href="/assets/js/30.c2d4cb8f.js"><link rel="prefetch" href="/assets/js/31.7aae24d6.js"><link rel="prefetch" href="/assets/js/32.61595319.js"><link rel="prefetch" href="/assets/js/33.764a821a.js"><link rel="prefetch" href="/assets/js/34.b6248c6e.js"><link rel="prefetch" href="/assets/js/35.bc08f30e.js"><link rel="prefetch" href="/assets/js/36.d9cac67f.js"><link rel="prefetch" href="/assets/js/37.16324eab.js"><link rel="prefetch" href="/assets/js/38.7d980c0a.js"><link rel="prefetch" href="/assets/js/39.1e4ff6de.js"><link rel="prefetch" href="/assets/js/4.79e3ce3d.js"><link rel="prefetch" href="/assets/js/40.2c747427.js"><link rel="prefetch" href="/assets/js/41.2146edbc.js"><link rel="prefetch" href="/assets/js/42.0c037cc9.js"><link rel="prefetch" href="/assets/js/43.ec879504.js"><link rel="prefetch" href="/assets/js/44.bfd5c8a4.js"><link rel="prefetch" href="/assets/js/45.e548fd6c.js"><link rel="prefetch" href="/assets/js/46.54826a50.js"><link rel="prefetch" href="/assets/js/47.8e664e67.js"><link rel="prefetch" href="/assets/js/48.bb07b0f2.js"><link rel="prefetch" href="/assets/js/49.9dc4fde3.js"><link rel="prefetch" href="/assets/js/5.3f076d78.js"><link rel="prefetch" href="/assets/js/50.760fef77.js"><link rel="prefetch" href="/assets/js/51.d3bb511c.js"><link rel="prefetch" href="/assets/js/52.eca7ee01.js"><link rel="prefetch" href="/assets/js/53.36d27318.js"><link rel="prefetch" href="/assets/js/54.35f198c3.js"><link rel="prefetch" href="/assets/js/55.fffbc613.js"><link rel="prefetch" href="/assets/js/56.8b07a8b0.js"><link rel="prefetch" href="/assets/js/57.1ec5013f.js"><link rel="prefetch" href="/assets/js/58.cf31e73b.js"><link rel="prefetch" href="/assets/js/59.3550dd34.js"><link rel="prefetch" href="/assets/js/6.b8956dca.js"><link rel="prefetch" href="/assets/js/60.4603a488.js"><link rel="prefetch" href="/assets/js/61.bb929801.js"><link rel="prefetch" href="/assets/js/62.6de5bf54.js"><link rel="prefetch" href="/assets/js/64.8e8f914a.js"><link rel="prefetch" href="/assets/js/65.e5b9aba2.js"><link rel="prefetch" href="/assets/js/66.7819346f.js"><link rel="prefetch" href="/assets/js/7.8d3ddb0b.js"><link rel="prefetch" href="/assets/js/8.59556403.js"><link rel="prefetch" href="/assets/js/9.4e5b813e.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.7950d16d.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/img/logo.png" alt="Chang's blog" class="logo"> <span class="site-name can-hide">Chang's blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/basic/" class="nav-link">
+  Basic
+</a></div><div class="nav-item"><a href="/vue/" class="nav-link router-link-active">
+  Vue
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/server/" class="nav-link">
+  Server
+</a></div><div class="nav-item"><a href="/others/" class="nav-link">
+  Others
+</a></div><div class="nav-item"><a href="https://juejin.im/user/1714893870337518" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><a href="https://github.com/changzhengithub" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/basic/" class="nav-link">
+  Basic
+</a></div><div class="nav-item"><a href="/vue/" class="nav-link router-link-active">
+  Vue
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/server/" class="nav-link">
+  Server
+</a></div><div class="nav-item"><a href="/others/" class="nav-link">
+  Others
+</a></div><div class="nav-item"><a href="https://juejin.im/user/1714893870337518" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  掘金
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div><div class="nav-item"><a href="https://github.com/changzhengithub" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>基础内容</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Vue Router</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/vue/route/vue路由.html" class="sidebar-link">vue路由</a></li><li><a href="/vue/route/v-cli添加路由.html" class="active sidebar-link">v-cli添加路由</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/vue/route/v-cli添加路由.html#v-cli添加路由" class="sidebar-link">v-cli添加路由</a></li><li class="sidebar-sub-header"><a href="/vue/route/v-cli添加路由.html#安装" class="sidebar-link">安装：</a></li><li class="sidebar-sub-header"><a href="/vue/route/v-cli添加路由.html#使用" class="sidebar-link">使用</a></li><li class="sidebar-sub-header"><a href="/vue/route/v-cli添加路由.html#拆分模块" class="sidebar-link">拆分模块</a></li></ul></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Vuex</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Faq</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="v-cli添加路由"><a href="#v-cli添加路由" class="header-anchor">#</a> v-cli添加路由</h2> <h2 id="安装"><a href="#安装" class="header-anchor">#</a> 安装：</h2> <p>在使用 vue-cli3.0 搭建Vue项目时，会有提示安装 vuex router等选项，可以直接选择。</p> <div class="language-js extra-class"><pre class="language-js"><code>npm install vue<span class="token operator">-</span>router
+</code></pre></div><h2 id="使用"><a href="#使用" class="header-anchor">#</a> 使用</h2> <p>创建router实例：</p> <p>在main.js同级文件创建router.js文件，来构建router路由，然后抛出这个router实例。</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// router.js</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> Router <span class="token keyword">from</span> <span class="token string">'vue-router'</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">IndexComponent</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'indexs' */</span> <span class="token string">'@/views/index/index.vue'</span><span class="token punctuation">)</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Router<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Router</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  mode<span class="token operator">:</span> <span class="token string">'history'</span><span class="token punctuation">,</span>
+  base<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">BASE_URL</span><span class="token punctuation">,</span>
+  routes<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      path<span class="token operator">:</span> <span class="token string">'/index'</span><span class="token punctuation">,</span>
+      name<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+      component<span class="token operator">:</span> IndexComponent
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>注册到Vue实例上：</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// main.js</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'./router'</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  router<span class="token punctuation">,</span>
+  <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token parameter">h</span> <span class="token operator">=&gt;</span> <span class="token function">h</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">$mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span>
+</code></pre></div><h2 id="拆分模块"><a href="#拆分模块" class="header-anchor">#</a> 拆分模块</h2> <p>如果路由过大，可以进行路由拆分，就是单纯的把路由 routes 数组拆分开到不同文件中去。</p> <p>在src目录下创建 router 文件夹：</p> <div class="language-sh extra-class"><pre class="language-sh"><code>└── src
+  ├── main.js
+  └── router           <span class="token comment"># router文件</span>
+      ├── index.js     <span class="token comment"># 我们组装模块并导出 router 的地方</span>
+      ├── a.js         <span class="token comment"># 模块a</span>
+      └── b.js         <span class="token comment"># 模块b</span>
+</code></pre></div><p>a模块：</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// a.js</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">A1Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'a' */</span> <span class="token string">'@/views/a1/a1.vue'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> <span class="token function-variable function">A2Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'a' */</span> <span class="token string">'@/views/a2/a2.vue'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/a1'</span><span class="token punctuation">,</span>
+    name<span class="token operator">:</span> <span class="token string">'a1'</span><span class="token punctuation">,</span>
+    component<span class="token operator">:</span> A1Component
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/a2'</span><span class="token punctuation">,</span>
+    name<span class="token operator">:</span> <span class="token string">'a2'</span><span class="token punctuation">,</span>
+    component<span class="token operator">:</span> A2Component
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre></div><p>b模块：</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// b.js</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">B1Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'b' */</span> <span class="token string">'@/views/b1/b1.vue'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> <span class="token function-variable function">B2Component</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'b' */</span> <span class="token string">'@/views/b2/b2.vue'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/b1'</span><span class="token punctuation">,</span>
+    name<span class="token operator">:</span> <span class="token string">'b1'</span><span class="token punctuation">,</span>
+    component<span class="token operator">:</span> B1Component
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    path<span class="token operator">:</span> <span class="token string">'/b2'</span><span class="token punctuation">,</span>
+    name<span class="token operator">:</span> <span class="token string">'b2'</span><span class="token punctuation">,</span>
+    component<span class="token operator">:</span> B2Component
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+</code></pre></div><p>合并到index.js文件：</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// index.js</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> Router <span class="token keyword">from</span> <span class="token string">'vue-router'</span>
+<span class="token keyword">import</span> a <span class="token keyword">from</span> <span class="token string">'./a.js'</span>
+<span class="token keyword">import</span> b <span class="token keyword">from</span> <span class="token string">'./b.js'</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">IndexComponent</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'indexs' */</span> <span class="token string">'@/views/index/index.vue'</span><span class="token punctuation">)</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Router<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Router</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  mode<span class="token operator">:</span> <span class="token string">'history'</span><span class="token punctuation">,</span>
+  base<span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">BASE_URL</span><span class="token punctuation">,</span>
+  routes<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      path<span class="token operator">:</span> <span class="token string">'/index'</span><span class="token punctuation">,</span>
+      name<span class="token operator">:</span> <span class="token string">'index'</span><span class="token punctuation">,</span>
+      component<span class="token operator">:</span> IndexComponent
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token operator">...</span>a<span class="token punctuation">,</span>
+    <span class="token operator">...</span>b
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p>注册到Vue实例上：</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// main.js</span>
+
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'./router/index'</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  router<span class="token punctuation">,</span>
+  <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token parameter">h</span> <span class="token operator">=&gt;</span> <span class="token function">h</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">$mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/vue/route/vue路由.html" class="prev">
+        vue路由
+      </a></span> <span class="next"><a href="/vue/vuex/vuex状态管理器.html">
+        Vuex状态管理器
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.2c1617c9.js" defer></script><script src="/assets/js/2.85410337.js" defer></script><script src="/assets/js/63.e3c8d15e.js" defer></script>
+  </body>
+</html>

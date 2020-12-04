@@ -82,7 +82,7 @@ new Vue({
       ├── mutations.js      # 根级别的 mutation
       ├── actions.js        # 根级别的 action
       ├── mutation-types.js # 根级别的 mutation types
-      └── actions-types.js  # 根级别的 action types
+      └── action-types.js  # 根级别的 action types
 ```
 index.js文件：
 ```js
@@ -264,8 +264,6 @@ const store = new Vuex.Store({
 
 export default store
 ```
-
-
 
 ## 使用
 

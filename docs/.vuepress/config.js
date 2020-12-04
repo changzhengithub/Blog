@@ -92,6 +92,7 @@ module.exports = {
           collapsable: true,
           children: [
             'route/vue路由',
+            'route/v-cli添加路由',
           ]
         },
         {
@@ -99,6 +100,7 @@ module.exports = {
           collapsable: true,
           children: [
             'vuex/vuex状态管理器',
+            'vuex/vue-cli添加vuex',
           ]
         },
         {

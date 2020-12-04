@@ -1,52 +1,5 @@
 # vue路由
 
-## 使用
-
-安装：
-```js
-npm install vue-router
-```
-
-创建router实例：
-
-在main.js同级文件创建router.js文件，来构建router路由，然后抛出这个router实例。
-```js
-// router.js
-
-import Vue from 'vue'
-import Router from 'vue-router'
-
-const IndexComponent = () => import(/* webpackChunkName: 'indexs' */ '@/views/index/index.vue')
-
-Vue.use(Router)
-
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/index.html',
-      name: 'index',
-      component: IndexComponent
-    }
-  ]
-})
-```
-
-挂载到实例上：
-```js
-// main.js
-
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
-```
-
 ## 创建路由
 
 首先，通过 `new VueRouter` 创建一个路由实例，在 `routes` 中定义路由，每个路由应该是一个组件。然后把创建好的路由实例挂载到 Vue 实例上，这样一个基本的路由就创建好了，然后，通过 `<router-view>` 组件在HTML中创建路由入口，路由就是从该组件进入，显示定义的路由组件，然后通过 `<router-link>` 来导航，`<router-link>` 就相当于一个 `<a>` 标签，添加路由地址，来进行跳转。

@@ -16,6 +16,7 @@
     <button @click="addCount">Add Count</button>
     <h1>Hello App!</h1>
     <p>{{$store.state.count}}</p>
+    <p>{{$store.state.moduleA.test}}</p>
   </div>
 
 
@@ -23,6 +24,17 @@
   <script src="https://cdn.jsdelivr.net/npm/vuex@3.6.0/dist/vuex.min.js"></script>
   <script>
     const INCREMENT = 'INCREMENT'
+
+    const moduleA = {
+      state: () => ({ 
+        test: 1
+      }),
+      mutations: {
+        getTest (state) {
+          state.test++
+        }
+      },
+    }
 
     const store = new Vuex.Store({
       state: {
@@ -56,6 +68,9 @@
         incrementAsync ({ commit }, payload) {
           commit('increment', payload)
         }
+      },
+      modules: {
+        moduleA
       }
     })
 
@@ -66,7 +81,8 @@
         amount: 0,
       },
       created() {
-        console.log(this.count)
+        console.log(store.state.count)
+        this.getTest()
         
       },
       methods: {
@@ -84,7 +100,7 @@
           // })
         },
         ...Vuex.mapActions(['incrementAsync']),
-        ...Vuex.mapMutations(['INCREMENT'])
+        ...Vuex.mapMutations(['INCREMENT', 'getTest'])
       },
       computed: {
         ...Vuex.mapState(['count']),
