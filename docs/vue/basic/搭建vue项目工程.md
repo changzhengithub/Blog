@@ -1,6 +1,16 @@
 # 搭建vue项目工程
 
+## 安装
+
+```sh
+npm install -g @vue/cli
+```
+
 ## 创建项目
+
+```sh
+vue create hello-world
+```
 
 ## 目录文件
 

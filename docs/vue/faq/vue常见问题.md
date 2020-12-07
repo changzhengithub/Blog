@@ -30,3 +30,12 @@
 ## 在自定义组件上使用v-model进行传值
 
 [在组件上使用v-model](/vue/在组件上使用v-model.html)
+
+## vue命令创建失败提示"command failed: npm install --loglevel error --registry=https://registry.npmjs.org/"
+
+一是使用淘宝安装，打开目录"C:\Users\Administrator"下的.vuerc 文件，修改里面的 `useTaobaoRegistry` 为 true。
+
+二是清除npm缓存：
+```sh
+npm cache clean --force
+```

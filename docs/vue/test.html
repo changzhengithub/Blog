@@ -13,103 +13,73 @@
 
 <body>
   <div id="app">
-    <button @click="addCount">Add Count</button>
-    <h1>Hello App!</h1>
-    <p>{{$store.state.count}}</p>
-    <p>{{$store.state.moduleA.test}}</p>
+
+    <button onclick="sendPost()">dddd</button>
   </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuex@3.6.0/dist/vuex.min.js"></script>
   <script>
-    const INCREMENT = 'INCREMENT'
 
-    const moduleA = {
-      state: () => ({ 
-        test: 1
-      }),
-      mutations: {
-        getTest (state) {
-          state.test++
-        }
-      },
+    class CallBack {
+      callbackSuccess = null
+      callbackFail = null
+
+      success(callback) {
+        this.callbackSuccess = callback
+        return this
+      }
+      
+      get(callback) {
+        this.callbackFail = callback
+        return this
+      }
     }
 
-    const store = new Vuex.Store({
-      state: {
-        count: 0,
-        list: [1, 3, 4, 5, 6, 7],
-        todos: [
-          { id: 1, text: '...', done: true },
-          { id: 2, text: '...', done: false }
-        ]
-      },
-      getters: {
-        listCount: function(state) {
-          return state.list.length
-        },
-        doneTodos: state => {
-          return state.todos.filter(todo => todo.done)
-        },
-        doneTodosCount: (state, getters) => {
-          return getters.doneTodos.length
-        },
-        getTodoById: (state) => (id) => {
-          return state.todos.find(todo => todo.id === id)
-        }
-      },
-      mutations: {
-        [INCREMENT] (state, payload) {
-          state.count += payload.amount
-        }
-      },
-      actions: {
-        incrementAsync ({ commit }, payload) {
-          commit('increment', payload)
-        }
-      },
-      modules: {
-        moduleA
-      }
-    })
+    class Http {
 
-    var vm = new Vue({
-      el: '#app',
-      store,
-      data: {
-        amount: 0,
-      },
-      created() {
-        console.log(store.state.count)
-        this.getTest()
+      send(option) {
+        const cb = new CallBack()
+        setTimeout(() => {
+          console.log(11111)
+          this.dispose(option, cb)
+          // if (cb.callbackSuccess) cb.callbackSuccess(option)
+        }, 1000)
+
+        console.log(cb.callbackSuccess)
         
-      },
-      methods: {
-        // increment: function() {
-        //   this.$store.commit('increment')
-        //   console.log(this.$store.state.count)
-        // },
-        addCount: function() {
-          this[INCREMENT]({
-            amount: 10
-          })
-          // this.incrementAsync({
-          //   type: 'incrementAsync',
-          //   amount: 10
-          // })
-        },
-        ...Vuex.mapActions(['incrementAsync']),
-        ...Vuex.mapMutations(['INCREMENT', 'getTest'])
-      },
-      computed: {
-        ...Vuex.mapState(['count']),
-      //   ...mapGetters([
-      //   'doneTodos',
-      //   'getTodoById'
-      // ])
+        return cb
       }
-    })
+
+      dispose(option, cb) {
+        if (cb.callbackSuccess) cb.callbackSuccess(option)
+      }
+    }
+
+    var http = new Http();
+
+    function sendPost() {
+      http.send(123).success(function(option) {
+        console.log(option)
+      });
+    }
+    
+
+    
+    // var vm = new Vue({
+    //   el: '#app',
+    //   store,
+    //   data: {
+    //     amount: 0,
+    //   },
+    //   created() {
+    //     // this.getTest()
+        
+    //   },
+    //   methods: {
+    //   },
+    // })
   </script>
 </body>
 
