@@ -258,6 +258,11 @@ class Http {
 
 export default new Http()
 ```
+
+typescript写法：
+```js
+
+```
 ```js
 // Url.class.js
 

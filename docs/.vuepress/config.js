@@ -85,6 +85,10 @@ module.exports = {
             'basic/在组件上使用v-model',
             'basic/组件之间的通信',
             'basic/vue过渡效果实现',
+            'basic/axios封装',
+            'basic/vue添加typescript',
+            'basic/vue添加sass',
+            'basic/搭建vue项目工程',
           ]
         },
         {
