@@ -222,74 +222,457 @@ export default router
 
 ## vuex改写
 
-vue-cli创建项目时，vuex默认没有使用ts，如果想要vuex的使用更标准化可以手动改写store中的js文件，然后再通过插件 `vue-class/vuex-module-decorators` 提供的装饰器来获取和调用vuex数据和方法。
+vue-cli创建项目时，vuex默认没有使用ts，如果想要vuex的使用更标准化可以手动改写store中的js文件，然后再通过插件 `vue-class` 提供的装饰器来获取和调用vuex数据和方法。
 
 改写store：
 
-store使用模块化写法，我们手动把这些模块中的js文件改写成 ts 文件。
+store使用模块化写法，我们手动把这些模块中的js文件改写成 ts 文件。一般项目不需要分模块来做，只需要把文件分开来引入，这样也是比较清晰和规范的写法。如果是大型项目可以考虑分模块来写，如下面的目录所示。
 
 目录结构：
 ```sh
 ├── main.js
 └── store
-    ├── index.ts          # 组装模块并导出 store 的地方
-    ├── state.ts          # state
-    ├── state-types.ts    # state types
-    ├── getters.ts        # getter
-    ├── mutations.ts      # mutation
-    ├── mutation-types.ts # mutation types
-    ├── actions.ts        # action
-    └── actions-types.ts  # action types
+    ├── index.ts              # 组装模块并导出 store 的地方
+    ├── state.ts              # state
+    ├── state-types.ts        # state types
+    ├── getters.ts            # getter
+    ├── mutations.ts          # mutation
+    ├── mutation-types.ts     # mutation types
+    ├── actions.ts            # action
+    ├── actions-types.ts      # action types
+    └── moduleA               # 模块A
+        ├── index.ts          # 模块A store导出
+        ├── state.ts          # 模块A state
+        ├── state-types.ts    # 模块A state types
+        ├── getters.ts        # 模块A getter
+        ├── mutations.ts      # 模块A mutation
+        ├── mutation-types.ts # 模块A mutation types
+        ├── actions.ts        # 模块A action
+        └── actions-types.ts  # 模块A action types
 ```
 
+store仓库基本写法：
 ```js
-// index.js
+// store/index.js
 import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 import state from './state'
+import getters from './getters'
 import mutations from './mutations'
-import mutations from './mutations'
+import actions from './actions'
 import { RootState } from './state-types'
+
+// 导入模块A
+import moduleA from './moduleA/index'
 
 Vue.use(Vuex)
 
 const store: StoreOptions<RootState> = {
   // 全局
   state,
+  getters,
   mutations,
+  actions,
+  // 模块
+  modules: {
+    moduleA
+  }
 }
+
 export default new Vuex.Store<RootState>(store);
 ```
-
 ```js
-// state.js
+// store/state.js
 import { RootState } from './state-types'
 
 const state: RootState = {
-  count: 0,
+  count: 100,
   token: ''
 }
 
 export default state
 ```
 ```js
-// state-types.js
+// store/state-types.js
 export interface RootState {
   token: string,
   count: number,
 }
 ```
+```js
+// store/getters.js
+import { RootState } from './state-types'
 
-组件获取store
+const getters = {
+  doubleCount: (state: RootState) => {
+    return state.count * 2
+  },
+  multipleCount: (state: RootState) => (multiple: number) => {
+    return state.count * multiple
+  },
+}
+
+export default getters
+```
+```js
+// store/mutations.js
+import * as mutationTypes from './mutation-types'
+import { RootState } from './state-types'
+
+const mutations = {
+  [mutationTypes.ADD_COUNT] (state: RootState, amount: number) {
+    state.count += amount
+  },
+  [mutationTypes.GET_TOKEN] (state: RootState, token: string) {
+    state.token = token
+  }
+}
+
+export default mutations
+```
+```js
+// store/mutation-types.js
+export const ADD_COUNT = 'ADD_COUNT';
+export const GET_TOKEN = 'GET_TOKEN';
+```
+```js
+// store/actions.js
+import { ActionContext } from "vuex";
+import { RootState } from './state-types'
+import * as aTypes from './action-types'
+import * as mTypes from './mutation-types'
+
+type ActionStore = ActionContext<RootState, any>
+
+const actions = {
+  [aTypes.ADD_COUNT_ASYNC] ({ commit }: ActionStore, amount: number) {
+    setTimeout(() => {
+      commit(mTypes.ADD_COUNT, amount)
+    }, 1000)
+  },
+  [aTypes.GET_TOKEN_ASYNC] ({ commit }: ActionStore, token: string) {
+    setTimeout(() => {
+      commit(mTypes.GET_TOKEN, token)
+    }, 1000)
+  }
+}
+
+export default actions
+```
+```js
+// store/action-types.js
+export const ADD_COUNT_ASYNC = 'ADD_COUNT_ASYNC';
+export const GET_TOKEN_ASYNC = 'GET_TOKEN_ASYNC';
+```
+
+模块A写法：
+```js
+// moduleA/index.js
+import state from './state'
+import getters from './getters'
+import mutations from './mutations'
+import actions from './actions'
+
+// 一定要写 namespaced 命名空间
+const moduleA = {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
+}
+
+export default moduleA
+```
+```js
+// moduleA/state.js
+import { moduleAState } from './state-types'
+
+const state: moduleAState = {
+  subCount: 10
+}
+
+export default state
+```
+```js
+// moduleA/state-types.js
+export interface moduleAState {
+  subCount: number,
+}
+```
+```js
+// moduleA/getters.js
+import { moduleAState } from './state-types'
+
+const getters = {
+  doubleSubCount: (state: moduleAState) => {
+    return state.subCount * 2
+  },
+  multipleSubCount: (state: moduleAState) => (multiple: number) => {
+    return state.subCount * multiple
+  },
+}
+
+export default getters
+```
+```js
+// moduleA/mutations.js
+import * as mATypes from './mutation-types'
+import { moduleAState } from './state-types'
+
+const mutations = {
+  [mATypes.ADD_SUB_COUNT] (state: moduleAState, amount: number) {
+    state.subCount += amount
+  }
+}
+
+export default mutations
+```
+```js
+// moduleA/mutation-types.js
+export const ADD_SUB_COUNT = 'ADD_SUB_COUNT';
+export const GET_TOKEN = 'GET_TOKEN';
+```
+```js
+// moduleA/actions.js
+import { ActionContext } from "vuex";
+import * as mATypes from './mutation-types'
+import * as aATypes from './action-types'
+import { RootState } from '../state-types'
+import { moduleAState } from './state-types'
+
+// 第一个泛型参数为当前模块的
+type ActionStore = ActionContext<moduleAState, RootState>
+
+const actions = {
+  [aATypes.ADD_SUB_COUNT_ASYNC] ({ commit }: ActionStore, amount: number) {
+    setTimeout(() => {
+      commit(mATypes.ADD_SUB_COUNT, amount)
+    }, 1000)
+  },
+}
+
+export default actions
+```
+```js
+// moduleA/action-types.js
+export const ADD_SUB_COUNT_ASYNC = 'ADD_SUB_COUNT_ASYNC';
+```
+
+在组件获取store
 
 使用 `vue-class` 插件提供的装饰器代替 map 函数
-```js
+```vue
+<template>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+    <div>
+      <button @click="addCount(amount)">addCount</button>
+      <button @click="addCountAsync(amount)">addCountAsync</button>
+      <button @click="getToken('foisuoiu325kjsd')">getToken</button>
+      <button @click="getTokenAsync('111111111111')">getTokenAsync</button>
+      <p>{{count}}</p>
+      <p>{{doubleCount}}</p>
+      <p>{{multipleCount(3)}}</p>
+      <p>{{token}}</p>
+    </div>
 
+    <p>moduleA 子模块</p>
+    <button @click="addSubCount(subAmount)">addCount</button>
+    <button @click="addSubCountAsync(subAmount)">addCountAsync</button>
+    <p>{{subCount}}</p>
+    <p>{{doubleSubCount}}</p>
+    <p>{{multipleSubCount(3)}}</p>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import * as mTypes from '@/store/mutation-types'
+import * as aTypes from '@/store/action-types'
+import * as mATypes from '@/store/moduleA/mutation-types'
+import * as aATypes from '@/store/moduleA/action-types'
+
+import { State, Getter, Mutation, Action, namespace } from 'vuex-class'
+
+// 引入模块A
+const moduleA = namespace('moduleA')
+
+@Component
+export default class HelloWorld extends Vue {
+  @Prop() private msg!: string;
+
+  // state
+  @State count!: number
+  @State token!: string
+  // 子模块
+  @moduleA.State subCount!: number
+  // getter
+  @Getter doubleCount!: number
+  @Getter multipleCount!: Function
+  // 子模块
+  @moduleA.Getter doubleSubCount!: number
+  @moduleA.Getter multipleSubCount!: Function
+  // mutation
+  @Mutation(mTypes.ADD_COUNT) addCount!: Function
+  @Mutation(mTypes.GET_TOKEN) getToken!: Function
+  // 子模块
+  @moduleA.Mutation(mATypes.ADD_SUB_COUNT) addSubCount!: Function
+  // action
+  @Action(aTypes.ADD_COUNT_ASYNC) addCountAsync!: Function
+  @Action(aTypes.GET_TOKEN_ASYNC) getTokenAsync!: Function
+  // 子模块
+  @moduleA.Action(aATypes.ADD_SUB_COUNT_ASYNC) addSubCountAsync!: Function
+
+  // data
+  amount = 10
+  subAmount = 20
+
+  created() {
+    console.log(this.doubleCount)
+    console.log(this.multipleCount(3))
+  }
+}
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss"></style>
 ```
 
 ## Http改写
 
+```js
+import Url from './Url.class'
+import axios from 'axios'
+
+interface ArgsType {
+  url: string;
+  method: string;
+  data?: object;
+  baseURL?: string;
+  headers?: object;
+  [key: string]: any;
+}
+
+interface objType {
+  [key: string]: any;
+}
+
+
+// 新建一个CallBack类来保证每次回调的callbackSuccess都是更新的
+class CallBack {
+  public callbackSuccess: any | undefined
+  public callbackFail: any | undefined
+
+  success(callback: Function): CallBack {
+    this.callbackSuccess = callback
+    return this
+  }
+  
+  fail(callback: Function): CallBack {
+    this.callbackFail = callback
+    return this
+  }
+}
+
+class Http {
+
+  // 请求地址
+  public baseURL: string = process.env.NODE_ENV == "production" ? "生产环境URL" : "开发环境URL"
+  // 超时时间
+  public timeout: number = 1000
+  // 不需要加token的API
+  public excludeApis: Array<string> = ['LoginEmail', 'RegisterEmail']
+  // 保存的token
+  public token: string = 'xxxxxx'
+
+  // 单个请求发送
+  send(args: ArgsType): CallBack {
+    const cb = new CallBack()
+    // 超时时间
+    axios.defaults.timeout = 3000
+    axios(this.formatArgs(args)).then(response => {
+      this.dispense(response, cb)
+    }).catch(error => {
+      if (cb.callbackFail) cb.callbackFail(error)
+    })
+
+    return cb
+  }
+
+    // 多请求同时发送
+    sendAsync (args: ArgsType) {
+      try {
+        return axios(this.formatArgs(args)).then(response => {
+          const { code, description } = response.data
+          switch (code) {
+            case 200:
+              return Promise.resolve(response.data)
+            default:
+              return Promise.reject(response.data)
+            }
+        }).catch(error => {
+          throw new Error(error)
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+  // 配置API请求
+  formatArgs(args: ArgsType): Object {
+    // 基本配置
+    const option: ArgsType = {
+      url: Url[args.url],
+      method: args.method.toLowerCase(),
+      baseURL: this.baseURL,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    if (args.headers) Object.assign(option.headers, args.headers)
+
+    let data: objType = args.data ? args.data : {}
+    switch (option.method) {
+      case 'get':
+        option.params = args.data
+      break
+      default:
+        if (!this.excludeApis.includes(args.url)) data.access_token = this.token
+        option.data = data
+      break
+    }
+
+    return option
+  }
+  dispense (response: objType, cb: CallBack) {
+    let errMsg = ''
+    switch (response.code) {
+      case 200:
+        if (cb.callbackSuccess) cb.callbackSuccess(response.data)
+        break
+      case 401:
+        errMsg = '未授权，请登录'
+        if (cb.callbackFail) cb.callbackFail(errMsg)
+        break
+      case 500:
+        errMsg = '服务器内部错误'
+        if (cb.callbackFail) cb.callbackFail(errMsg)
+        break
+      default:
+        if (cb.callbackFail) cb.callbackFail(response)
+    }
+  }
+}
+
+export default new Http()
+```
+
+## Storage改写
+
 ## 常见问题
+
+
 
 
 

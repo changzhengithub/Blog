@@ -187,7 +187,7 @@ class CallBack {
     return this
   }
   
-  get(callback) {
+  fail(callback) {
     this.callbackFail = callback
     return this
   }
@@ -198,7 +198,8 @@ class Http {
   baseURL = process.env.NODE_ENV == "production" ? "生产环境URL" : "开发环境URL"
   // 不需要加token的API
   excludeApis = ['LoginEmail', 'RegisterEmail']
-  // 发送请求
+
+  // 单个请求发送
   send(args) {
     const cb = new CallBack()
     // 超时时间
@@ -210,6 +211,26 @@ class Http {
     })
     return cb
   }
+
+  // 多请求同时发送
+  sendAsync (args) {
+    try {
+      return axios(this.formatArgs(args)).then(response => {
+        const { code, description } = response.data
+        switch (code) {
+          case 200:
+            return Promise.resolve(response.data)
+          default:
+            return Promise.reject(response.data)
+          }
+      }).catch(error => {
+        throw new Error(error)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // 配置API请求
   formatArgs(args) {
     // 基本配置
@@ -258,11 +279,6 @@ class Http {
 
 export default new Http()
 ```
-
-typescript写法：
-```js
-
-```
 ```js
 // Url.class.js
 
@@ -279,6 +295,7 @@ export default class Url {
 // 组件中
 import Http from '@/modules/Http.class'
 
+// 单请求
 Http.send({
   url: 'LoginEmail',
   method: 'post',
@@ -290,5 +307,25 @@ Http.send({
   console.log(data)
 }).fail(err => {
   console.log(err)
+})
+
+// 多请求
+Promise.all([
+  Http.sendAsync({
+    url: 'Folder',
+    method: 'GET',
+    data: {
+      project: this.projectUuid
+    }
+  }),
+  Http.sendAsync({
+    url: 'Page',
+    method: 'GET',
+    data: {
+      project: this.projectUuid
+    }
+  }),
+]).then(data => {
+  console.log(data)
 })
 ```
