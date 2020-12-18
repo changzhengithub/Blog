@@ -668,9 +668,44 @@ class Http {
 export default new Http()
 ```
 
-## Storage改写
-
 ## 常见问题
+
+### shims-vue.d.ts 有什么用处
+
+```js
+declare module "*.vue" {
+  import Vue from "vue";
+  export default Vue;
+}
+```
+Typescript 默认不支持 `*.vue` 文件，所以需要创建一个 `shims-vue.d.ts` 文件，告诉ts  `*.vue` 文件让vue处理。在导入代码的时候也需要加上 `.vue` 后缀。
+
+
+### Vue使用全局属性
+
+比如引入插件，插件的全局方法挂载到Vue实例下，使用时却报错，如 `this.$Toast()/this.$Message`。
+
+比如window添加全局属性，也会报错。
+
+解决办法： 我们创建一个 `global.d.ts` d.ts文件专门用来添加全局扩充。
+```js
+// 定制一个文件，设置你想要补充的类型
+
+import Vue from 'vue'
+
+// window全局属性
+interface Window {
+  app: any;
+}
+
+//  声明为 Vue 补充的东西
+declare module "vue/types/vue" {
+  interface Vue {
+    $Toast: any;
+    $Message: any;
+  }
+}
+```
 
 
 

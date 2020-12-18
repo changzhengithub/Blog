@@ -529,6 +529,23 @@ const Bar = () => import(/* webpackChunkName: "group-foo" */ './Bar.vue')
 const Baz = () => import(/* webpackChunkName: "group-foo" */ './Baz.vue')
 ```
 
+## 警告
+
+当访问到没有的路由时，我们给出一个警告提示页面。
+```js
+const NotFoundComponent = () => import(/* webpackChunkName: "not-found" */ './NotFoundComponent.vue')
+
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    {
+      path: '*',
+      component: NotFoundComponent
+    }
+  ]
+})
+```
+
 
 
 
