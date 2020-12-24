@@ -27,7 +27,7 @@ module.exports = {
           collapsable: true,
           children: [
             'css/css常用命名',
-            'css/常见字体样式'
+            'css/CSS常见样式'
           ]
         },
         {
@@ -95,8 +95,8 @@ module.exports = {
           title: 'Vue Router',
           collapsable: true,
           children: [
-            'route/vue路由',
-            'route/v-cli添加路由',
+            'router/vue路由',
+            'router/v-cli添加路由',
           ]
         },
         {

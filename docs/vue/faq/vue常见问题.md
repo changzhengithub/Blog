@@ -39,3 +39,6 @@
 ```sh
 npm cache clean --force
 ```
+
+## $router和$route有什么区别
+

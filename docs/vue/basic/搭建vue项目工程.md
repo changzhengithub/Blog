@@ -203,6 +203,58 @@ process.env.FOO
 
 ## css配置
 
+vue-cli使用sass或者less在创建项目时会添加选项，如果没有选择也可以自己安装，以前安装sass需要安装 `node-sass`和`sass-loader`然后再修改webpack选项，现在只需要安装 `sass-loader`和`sass`，然后在 `vue.config.js`的 `css` 选项中配置 sass全局使用变量就可以了。
+
+安装CSS预处理器
+```sh
+# Sass
+npm install -D sass-loader sass
+
+# Less
+npm install -D less-loader less
+```
+
+在 vue文件中使用
+```vue
+<style scoped lang="scss">
+  $color: red;
+</style>
+```
+
+导入其他css或scss文件
+```vue
+<style scoped lang="scss">
+  import './foo.module.css'
+  // 所有支持的预处理器都一样工作
+  import './foo.module.scss'
+</style>
+```
+
+配置sass使用全局变量
+```js
+// vue.config.js
+module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        // @是src的别名
+        prependData: `@import "@/assets/sass/main.scss"`
+      },
+      scss: {
+        prependData: `@import "@/assets/sass/main.scss";`
+      },
+      less:{
+        // `primary` is global variables fields name
+        globalVars: {
+          primary: '#fff'
+        }
+      }
+    }
+  }
+}
+```
+
+postCss 为css添加前缀，vue-cli默认开启。
 
 
 
