@@ -87,7 +87,7 @@ module.exports = {
             'basic/vue过渡效果实现',
             'basic/axios封装',
             'basic/vue添加typescript',
-            'basic/vue添加sass',
+            'basic/vue添加flex',
             'basic/搭建vue项目工程',
           ]
         },
@@ -96,7 +96,7 @@ module.exports = {
           collapsable: true,
           children: [
             'router/vue路由',
-            'router/v-cli添加路由',
+            'router/vue-cli添加路由',
           ]
         },
         {
@@ -136,7 +136,8 @@ module.exports = {
           title: 'Videos',
           collapsable: false,
           children: [
-            'videos/test'
+            'videos/video视频播放',
+            'videos/H5页面加载YouTube视频',
           ]
         },
         {

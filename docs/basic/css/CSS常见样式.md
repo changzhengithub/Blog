@@ -3,8 +3,11 @@
 ## 常见字体样式
 
 ```css
-/* 允许一个英文单词换行 */
+/* 一个英文单词太长允许换行 */
 overflow-wrap: break-word;
+
+/* 行内太长允许换行 */
+word-break: break-all;
 
 /* 文本阴影： x, y, blur, color */
 text-shadow: 1px 1px 2px black;
@@ -175,7 +178,141 @@ div {
 }
 ```
 
-## 三角形特殊形状
+## 边框实现特殊形状
+
+通过宽高、边框、圆角、颜色来调整他们之间的比例来实现各种特殊形状。
+
+```css
+/* 直角三角形 */
+.triangle {
+  width: 0;
+  height: 0;
+  border: 30px;
+  border-style: solid;
+  border-color: black black transparent transparent;
+}
+
+/* 等腰三角形 */
+.triangle {
+  width: 0;
+  height: 0;
+  border: 30px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+/* 等腰梯形 */
+.triangle {
+  width: 20px;
+  height: 20px;
+  border: 20px;
+  border-style: solid;
+  border-color:#e66161 #f3bb5b #94e24f #85bfda;
+}
+
+/* 不规则三角形 */
+/* 通过调整border四个边框不同的宽度来实现 */
+/* 可以实现各种特殊形状 */
+/* 加上border-radius 还可以实现扇形等特殊形状 */
+
+/* 首场等腰三角形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 30px solid #e66161;
+  border-bottom: 0;
+}
+
+/* 不规则直角三角形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+
+  border-top: 60px solid transparent;
+  border-right: 30px solid #e66161;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+/* 不规则三角形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+  border-left: 15px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 30px solid #e66161;
+  border-bottom: 0;
+}
+
+/* 对称不规则三角形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+  border-left: 15px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 30px solid #e66161;
+  border-bottom: 30px solid #85bfda;
+}
+
+/* 不规则梯形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+  border-top: 15px solid #e66161;
+  border-right: 15px solid #e66161;
+  border-left: 15px solid transparent;
+  border-bottom: 0;
+}
+
+/* 不规则四边形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+  border-top: 60px solid #e66161;
+  border-right: 30px solid #e66161;
+  border-left: 80px solid transparent;
+  border-bottom: 50px solid transparent;
+}
+
+/* 扇形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+
+  border-top: 100px solid #e66161;
+  border-right: 100px solid #f3bb5b;
+  border-left: 100px solid #94e24f;
+  border-bottom: 100px solid #85bfda;
+  border-radius: 100px;
+}
+
+/* 拱形 */
+.triangle {
+  width: 40px;
+  height: 30px;
+
+  border-top: 30px solid #e66161;
+  border-right: 30px solid #e66161;
+  border-left: 30px solid #e66161;
+  border-bottom: 0px solid transparent;
+  border-radius: 15px;
+}
+
+/* 不规则圆形 */
+.triangle {
+  width: 0px;
+  height: 0px;
+
+  border-top: 100px solid #e66161;
+  border-right: 100px solid #f3bb5b;
+  border-left: 100px solid #94e24f;
+  border-bottom: 100px solid #85bfda;
+  border-radius: 20% 80% 30% 70%/80% 70% 30% 20%;
+}
+```
 
 ## 
 

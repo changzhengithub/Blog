@@ -203,6 +203,8 @@ process.env.FOO
 
 ## css配置
 
+我们把公共样式，css或scss都放在src/assets静态资源文件夹下面。
+
 vue-cli使用sass或者less在创建项目时会添加选项，如果没有选择也可以自己安装，以前安装sass需要安装 `node-sass`和`sass-loader`然后再修改webpack选项，现在只需要安装 `sass-loader`和`sass`，然后在 `vue.config.js`的 `css` 选项中配置 sass全局使用变量就可以了。
 
 安装CSS预处理器
@@ -212,22 +214,6 @@ npm install -D sass-loader sass
 
 # Less
 npm install -D less-loader less
-```
-
-在 vue文件中使用
-```vue
-<style scoped lang="scss">
-  $color: red;
-</style>
-```
-
-导入其他css或scss文件
-```vue
-<style scoped lang="scss">
-  import './foo.module.css'
-  // 所有支持的预处理器都一样工作
-  import './foo.module.scss'
-</style>
 ```
 
 配置sass使用全局变量
@@ -254,17 +240,49 @@ module.exports = {
 }
 ```
 
+定义全局sass样式：
+
+在src/assets目录下创建sass文件，在此文件夹下创建main.scss文件，main.scss文件为sass入口文件，main.scss在vue.config.js中定义了，就不需要在main.js中引入，会自动被全局使用。然后定义其他公共scss文件，在文件名前加上_来区分，如_flex.scss/_unit.scss文件。在main.scss引入这些公共sass文件就可以全局使用了。
+
+```scss
+// main.scss
+@import "./_flex.scss";
+@import "./_unit.scss";
+```
+
+计算适配尺寸：
+```scss
+// _unit.scss
+$unit: 75 !default;
+$symbol: 10vw !default;
+```
+
+在 vue文件中使用
+```vue
+<style scoped lang="scss">
+  width: 126 / $unit * $symbol;
+</style>
+```
+
+导入其他css或scss文件
+```vue
+<style scoped lang="scss">
+  import './foo.module.css'
+  // 所有支持的预处理器都一样工作
+  import './foo.module.scss'
+</style>
+```
+
 postCss 为css添加前缀，vue-cli默认开启。
 
-
+如果使用flexible的rem来适配尺寸，可以使用插件 px2rem-loader 来自动转换。
 
 ## 添加路由
 
+[vue-cli添加路由](/vue/router/vue-cli添加路由.html)
+
 ## 添加vuex
+[vue-cli添加vuex](/vue/vuex/vue-cli添加vuex.html)
 
 ## 添加axios
-
-
-## 添加UI框架
-
-## 静态资源存放
+[axios封装](/vue/basic/axios封装.html)

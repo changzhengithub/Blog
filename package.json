@@ -16,5 +16,8 @@
   "devDependencies": {
     "vuepress": "^1.5.4",
     "watchpack": "^1.6.1"
+  },
+  "dependencies": {
+    "vuepress-theme-vuesax": "^1.0.0"
   }
 }
