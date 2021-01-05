@@ -27,7 +27,8 @@ module.exports = {
           collapsable: true,
           children: [
             'css/css常用命名',
-            'css/CSS常见样式'
+            'css/CSS常见样式',
+            'css/字体设置'
           ]
         },
         {
