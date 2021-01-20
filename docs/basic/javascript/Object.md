@@ -16,8 +16,9 @@ obj.toString() // 返回一个表示该对象的字符串
 obj.valueOf() // 返回值为该对象的原始值
 ```
 
-`obj.hasOwnProperty(prop)` 判断一个对象是否具有属性prop且非原型属性， 返回Boolean值
+## obj.hasOwnProperty(prop)
 
+判断一个对象是否具有属性prop且非原型属性， 返回Boolean值
 ``` js
 var obj1 = {a: 1}
 obj1.hasOwnProperty('a') // ture
