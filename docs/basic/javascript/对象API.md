@@ -38,14 +38,18 @@ obj.isPrototypeOf(bar) // true  bar继承自obj
 Object.prototype.isPrototypeOf(obj) // ture
 ```
 
-`obj.propertyIsEnumerable(prop)`  判断prop属性是否可枚举，返回Boolean值
+## obj.propertyIsEnumerable(prop)
+
+判断prop属性是否可枚举，返回Boolean值
 ``` js
 var obj = {a: 1}
 obj.propertyIsEnumerable('a') // ture
 obj.propertyIsEnumerable('length') // false
 ```
 
-`Object.is()` 方法判断两个值是否为同一个值,与严格比较运算符（===）的行为基本一致。
+## Object.is()
+
+方法判断两个值是否为同一个值,与严格比较运算符（===）的行为基本一致。
 ``` js
 Object.is('foo', 'foo') // true
 ```
