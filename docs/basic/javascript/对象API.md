@@ -49,10 +49,11 @@ obj.propertyIsEnumerable('length') // false
 Object.is('foo', 'foo') // true
 ```
 
-`Object.assign(target, ...sources)` 方法用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）。返回目标对象。
+## Object.assign(target, ...sources)
 
-  属于浅拷贝，同名属性被替换
+方法用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）。返回目标对象。
 
+属于浅拷贝，同名属性被替换
 ``` js
 var target = {a: 1, b: 2}
 var source = {b: 3, c: 4}
@@ -60,7 +61,9 @@ var resultTarget = Object.assign(target, source)
 console.log(resultTarget) // {a: 1, b: 3, c: 4}
 ```
 
-`Object.create(proto)` 创建一个空对象，将这个对象的__proto__属性指向proto对象，proto为null，新对象是空对象，没有原型，不继承任何对象
+## Object.create(proto)
+
+创建一个空对象，将这个对象的__proto__属性指向proto对象，proto为null，新对象是空对象，没有原型，不继承任何对象
 
 就是给他的构造函数指定一个原型对象， 新对象能继承proto的属性 ， 和 Object.setPrototypeOf 一样。
 ``` js
