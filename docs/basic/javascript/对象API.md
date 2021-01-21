@@ -129,7 +129,9 @@ Object.values(obj) // ["bar", 42]
 Object.entries(obj) // [ ["foo", "bar"], ["age", 42] 
 ```
 
-`Object.fromEntries()`  是Object.entries()的逆操作，用于将一个键值对数组转为对象
+## Object.fromEntries()
+
+是Object.entries()的逆操作，用于将一个键值对数组转为对象
 ``` js
 Object.fromEntries([
   ['foo', 'bar'],
@@ -138,14 +140,18 @@ Object.fromEntries([
 // { foo: "bar", baz: 42 }
 ```
 
-`Object.getPrototypeOf(obj)` 获取对象obj的原型
+## Object.getPrototypeOf(obj)
+
+获取对象obj的原型
 ``` js
 var proto = {};
 var obj = Object.create(proto);
 Object.getPrototypeOf(obj) === proto; // true
 ```
 
-`Object.setPrototypeOf(obj, prototype)` 设置对象obj的原型为prototype
+## Object.setPrototypeOf(obj, prototype)
+
+设置对象obj的原型为prototype
 ``` js
 var obj = {a: 1}
 var proto = {b: 2}
@@ -155,11 +161,18 @@ console.log(obj.__proto__) // {b: 2}
 console.log(obj.__proto__ === proto) // true
 ```
 
-`Object.freeze()`  冻结一个对象, 所有属性都不可能以任何方式被修改
+## Object.freeze()
 
-`Object.isFrozen()`  判断一个对象是否被冻结。
+冻结一个对象, 所有属性都不可能以任何方式被修改
 
-`Object.seal()`  封闭一个对象， 只可修改当前对象，不能添加和删除。
+## Object.isFrozen()
 
-`Object.isSealed()`  判断一个对象是否被密封。
+判断一个对象是否被冻结。
 
+## Object.seal()
+
+封闭一个对象， 只可修改当前对象，不能添加和删除。
+
+## Object.isSealed()
+
+判断一个对象是否被密封。

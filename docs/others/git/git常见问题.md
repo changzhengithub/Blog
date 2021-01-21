@@ -34,6 +34,14 @@ git clone  http://10.1.1.11/service/tmall-service.git
 git clone -b dev http://10.1.1.11/service/tmall-service.git
 ```
 
+## 使用--depth 浅克隆
+```sh
+#只克隆最近一次commit提交的内容
+git clone --depth 1 http://10.1.1.11/service/tmall-service.git
+#指定分支
+git clone --depth 1 --branch dev http://10.1.1.11/service/tmall-service.git
+```
+
 ## git 修改本地和远程分支名
 
 ```git
@@ -62,10 +70,13 @@ git push origin newbranch:newbranch #把本地分支提交到远程上并新建n
 
 ## vscode总弹出git登录弹框
 
-打开终端输入
+到本地user下面把所有的.git文件都删了
 
+打开终端输入命令，然后push会提示认证，重新认证一下就好了。
 ```git
 git config --global credential.helper store
+git config --global user.email "xxx@xxx.com"
+git config --global user.name "xxxx"
 ```
 
 ## 撤销本地commit提交
@@ -91,4 +102,15 @@ HEAD^的意思是上一个版本，也可以写成HEAD~1 ，如果你进行了2�
 修改commit注释
 ```sh
 git commit --amend
+```
+
+## 删除远程分支
+
+```sh
+#查看所有分支
+git branch -a
+#删除本地
+git branch -d <branchName>
+#删除远程
+git push origin --delete <branchName>
 ```
