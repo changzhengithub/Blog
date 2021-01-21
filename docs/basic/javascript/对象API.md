@@ -26,8 +26,9 @@ obj1.hasOwnProperty('toString') // false
 obj1.hasOwnProperty('hasOwnProperty');   // 返回 false
 ```
 
-`object.isPrototypeOf(obj)` 判断该对象obj是否存在于另一个对象object的原型链上，object是obj的原型。返回Boolean值
+## object.isPrototypeOf(obj)
 
+判断该对象obj是否存在于另一个对象object的原型链上，object是obj的原型。返回Boolean值
 ``` js
 var obj = {}
 function Bar() {}
