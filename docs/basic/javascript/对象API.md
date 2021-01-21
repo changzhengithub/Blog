@@ -78,8 +78,9 @@ console.log(obj) // {}
 console.log(obj.__proto__) // {a: 1}
 ```
 
-`Object.defineProperty(obj, prop, descriptor)` 在obj对象上定义一个新属性，或者修改现有属性，并返回此对象。
-  
+##Object.defineProperty(obj, prop, descriptor)
+
+在obj对象上定义一个新属性，或者修改现有属性，并返回此对象。  
 ``` js
 // descriptor：对这个prop属性进行描述
 // descriptor: {
