@@ -108,12 +108,17 @@ Object.defineProperty(obj, "a", {
 console.log(obj) // {a: 38}
 ```
 
-`Object.keys(obj)`  返回obj键名数组
+##Object.keys(obj)
 
-`Object.values(obj)` 返回obj键值数组
+返回obj键名数组
 
-`Object.entries(obj)`  返回obj键值对数组
+## Object.values(obj)
 
+返回obj键值数组
+
+## Object.entries(obj)
+
+返回obj键值对数组
 ``` js
 var obj = { foo: 'bar', age: 42 };
 
