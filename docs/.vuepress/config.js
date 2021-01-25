@@ -91,6 +91,13 @@ module.exports = {
                     ]
                 },
                 {
+                  title: 'Vue3.0',
+                  collapsable: true,
+                  children: [
+                      'vue3/vue3新内容',
+                  ]
+                },
+                {
                     title: 'Vue Router',
                     collapsable: true,
                     children: [

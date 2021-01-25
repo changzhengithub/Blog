@@ -1641,16 +1641,17 @@ var vm = new Vue({
 })
 ```
 
-## 渲染函数
+## 渲染函数&JSX
 
 大多数时候使用模板来创建组件，但有些时候我们需要 `render` 函数来渲染一个组件也很实用。
 
-在定义组件时使用 `render` 函数返回一个通过 `createElement` 创建的虚拟DOM来代替 `template` 模板。
+在定义组件时使用 `render` 函数返回一个通过 `createElement` 创建的虚拟DOM (VNode)来代替 `template` 模板。
 
 ```js
 Vue.component('temp', {
   // 通过render函数的createElement创建一个虚拟DOM
   render: function (createElement) {
+    // 返回一个VNode
     return createElement(
       'div',   // 标签名称
       {
@@ -1683,9 +1684,11 @@ Vue.component('temp', {
 ```js
 createElement(
   'div',
+  // attribute属性
   {
     // (详情见下一节)
   },
+  // 子节点
   [
     '先写一些文字',
     createElement('h1', '一则头条'),
@@ -1698,7 +1701,7 @@ createElement(
 )
 ```
 
-模板属性：
+**属性与事件**
 ```js
 {
   // 与 `v-bind:class` 的 API 相同，
@@ -1765,7 +1768,7 @@ createElement(
 }
 ```
 
-事件&修饰符
+**事件&修饰符**
 
 模板创建事件是写在 `methods` 中的，通过函数渲染的事件是写在 `on` 中的，修饰符则用特效的符号代替，不能替代的则用原生事件代替。
 
@@ -1786,8 +1789,67 @@ on: {
 }
 ```
 
-用在单文件中：
+**插槽**
 
+通过 `this.$slots` 访问静态插槽的内容：
+```js
+render: function (createElement) {
+  // `<div><slot></slot></div>`
+  return createElement('div', this.$slots.default)
+}
+```
+
+通过 `this.$scopedSlots` 访问作用域插槽：
+```js
+props: ['message'],
+render: function (createElement) {
+  // `<div><slot :text="message"></slot></div>`
+  return createElement('div', [
+    this.$scopedSlots.default({
+      text: this.message
+    })
+  ])
+}
+```
+
+**JSX写法**
+```js
+import AnchoredHeading from './AnchoredHeading.vue'
+
+// 使用 h 参数 和vue3.0对应
+new Vue({
+  el: '#demo',
+  render: function (h) {
+    return (
+      <AnchoredHeading level={1}>
+        <span>Hello</span> world!
+      </AnchoredHeading>
+    )
+  }
+})
+```
+
+**函数式组件**
+
+一个没有任何状态，没有监听传递给它的状态，也没有生命周期方法，只接受一些props的函数，没有响应式数据，没有实例this我们可以定义为函数式组件，将其标记为 `functional`
+
+函数渲染：
+```js
+Vue.component('my-component', {
+  // functional为true
+  functional: true,
+  // Props 是可选的
+  props: {
+    // ...
+  },
+  // 为了弥补缺少的实例
+  // 提供第二个参数作为上下文
+  render: function (createElement, context) {
+    // ...
+  }
+})
+```
+单文件：
 ```html
 <template functional>
 </template>
