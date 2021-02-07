@@ -12,7 +12,26 @@ parseInt() // 转换为整数
 parseInt(1e1) // 10
 
 parseFloat() // 转换为浮点数
+
 ```
+
+## Number.isNaN() 和 isNaN()的区别
+
+isNaN() 检测一个值是不是不是number，false为数字，true为NaN不是数字。
+
+Number.isNaN() 检测是不是NaN值。 NaN值为true 否则都为false。
+
+```js
+const name = "Lydia Hallie";
+const age = 21;
+
+console.log(Number.isNaN(name)); // false
+console.log(Number.isNaN(age)); // false
+
+console.log(isNaN(name)); // true
+console.log(isNaN(age)); // false
+```
+
 ## Math
 
 ``` js
