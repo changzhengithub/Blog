@@ -152,6 +152,30 @@ div::after{
   transform : scale(0.5);
 }
 ```
+* 伪类 + transform 
+```css
+/* 利用 -webkit-min-device-pixel-ratio 获取屏幕 dpr 值 */
+
+.border_1px:before{
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #000;
+  transform-origin: 50% 0%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio:2){
+    .border_1px:before{
+        transform: scaleY(0.5);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio:3){
+    .border_1px:before{
+        transform: scaleY(0.33);
+    }
+}
+```
 
 * 利用`background-image`背景渐变
 
