@@ -202,6 +202,20 @@ div {
 }
 ```
 
+* 动态设置meta缩放比
+
+通过设置缩放，让CSS像素等于真正的物理像素。
+```js
+onst scale = 1 / window.devicePixelRatio;
+const viewport = document.querySelector('meta[name="viewport"]');
+if (!viewport) {
+    viewport = document.createElement('meta');
+    viewport.setAttribute('name', 'viewport');
+    window.document.head.appendChild(viewport);
+}
+viewport.setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale);
+```
+
 ## 边框实现特殊形状
 
 通过宽高、边框、圆角、颜色来调整他们之间的比例来实现各种特殊形状。

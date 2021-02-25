@@ -139,14 +139,14 @@ module.exports = {
       ],
       '/others/': [{
           title: 'Canvas',
-          collapsable: false,
+          collapsable: true,
           children: [
             'canvas/canvas绘制环形进度条',
           ]
         },
         {
           title: 'Videos',
-          collapsable: false,
+          collapsable: true,
           children: [
             'videos/video视频播放',
             'videos/H5页面加载YouTube视频',
@@ -154,10 +154,18 @@ module.exports = {
         },
         {
           title: 'Git',
-          collapsable: false,
+          collapsable: true,
           children: [
             'git/git常见问题',
             'git/git入门教程',
+          ]
+        },
+        {
+          title: 'Mobile',
+          collapsable: true,
+          children: [
+            'mobile/移动端适配',
+            'mobile/移动端常见问题'
           ]
         }
       ]
