@@ -86,7 +86,10 @@ module.exports = {
           title: 'Faq',
           collapsable: true,
           children: [
+            'faq/接口数据请求',
             'faq/a标签在IE中无法下载',
+            'faq/sessionStorage多标签共享',
+            'faq/获取世界json地址',
           ]
         },
       ],
